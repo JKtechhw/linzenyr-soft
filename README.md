@@ -1,3 +1,3 @@
 # linzenyr-soft
-# Team Project
+(Team Project)
 Školní projekt do předmětu: Řízení softwarových projektů, VSPJ
