@@ -8,7 +8,7 @@
 
 
 ## Technologies 
-*These are the technologies we went for during design phase. Depending on creating process we may have to adapt or change certain technologies *
+_These are the technologies we went for during design phase. Depending on creating process we may have to adapt or change certain technologies. _
 
 **Frontend**
 - JavaScript
