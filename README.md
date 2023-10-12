@@ -4,11 +4,13 @@
 
 Školní projekt do předmětu: Řízení softwarových projektů, VSPJ
 
+**Usefull Links <sub> (some of which should serve to us to navigate faster) </sub>**
+
 - :writing_hand: [RSP Moodle](https://moodle.vspj.cz/course/view.php?id=202744)
 
 
 ## Technologies 
-_These are the technologies we went for during design phase. Depending on creating process we may have to adapt or change certain technologies._
+_We chose these technologies during the design phase. Depending on the development process, we might need to adapt or switch to other technologies._
 
 **Frontend**
 - JavaScript
@@ -19,4 +21,9 @@ _These are the technologies we went for during design phase. Depending on creati
 
 
 ## Decription
-This Project is the main part of subject on our university College of Polytechnics Jihlava [VŠPJ](https://www.vspj.cz/).
+This project is the central component of our university subject 'RSP,' which stands for Software Project Management.
+<sub>College of Polytechnics Jihlava [VŠPJ](https://www.vspj.cz/)</sub>
+
+The objective of the project is to develop a system for an abstract magazine. While it involves multiple participants, the primary ones are authors who can submit articles to editors for publication.
+
+The project should include a login system for various levels and types of users, as well as a database containing numerous items, one of which is previous magazines.
