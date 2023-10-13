@@ -1,9 +1,6 @@
 # linzenyr-soft 
 <sub> (Team Project) </sub>
 
-
-Školní projekt do předmětu: Řízení softwarových projektů, VSPJ
-
 **Usefull Links <sub> (some of which should serve to us to navigate faster) </sub>**
 
 - :writing_hand: [RSP Moodle](https://moodle.vspj.cz/course/view.php?id=202744)
