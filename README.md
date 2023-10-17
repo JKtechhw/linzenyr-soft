@@ -1,7 +1,7 @@
 # linzenyr-soft 
 <sub> (Team Project) </sub>
 
- :gb:🏴󠁧󠁢󠁥󠁮󠁧󠁿 [English version of Readme](README.en.md) 🇺🇸
+ :gb:🏴󠁧󠁢󠁥󠁮󠁧󠁿 [English version of Readme](README.en.md) 🇺🇸🇦🇺
 
 Školní projekt do předmětu: Řízení softwarových projektů, VSPJ
 
