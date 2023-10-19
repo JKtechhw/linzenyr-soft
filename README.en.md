@@ -1,9 +1,12 @@
-# linzenyr-soft 
+# Linzenyr Soft 
 <sub> (Team Project) </sub>
 
 **Usefull Links <sub> (some of which should serve to us to navigate faster) </sub>**
 
-- :writing_hand: [RSP Moodle](https://moodle.vspj.cz/course/view.php?id=202744)
+- :writing_hand: [RSP Moodle](https://moodle.vspj.cz/course/view.php?id=202744) (For all the Info for RSP)
+- :pencil2: [Scrum Desk](https://app.scrumdesk.com/#/projects/37689/desk/map) (For managing Scrum Team)
+- :camera_flash: [Design Example](https://www.figma.com/proto/xWFnRvthy1rQEpl2NDtnHr/Untitled?type=design&node-id=1-2&viewport=1147%2C374%2C0.58&t=6iBECgZAcJgIROmt-1&scaling=min-zoom&page-id=0%3A1%3Ffuid%3D1174824307170631133&mode=design) (The Web Design Prototype)
+- :technologist: [Teams Group](https://teams.microsoft.com/_#/school/conversations/Linženýr%20soft?threadId=19:7e5188aff29e4668bb2a1b64186ac8de@thread.tacv2&ctx=channel) (Communication channel for Team and Teacher)
 
 
 ## Technologies 
@@ -15,7 +18,7 @@ _We chose these technologies during the design phase. Depending on the developme
 **Backend**
 - PHP
 
-
+**Database**
 
 ## Decription
 This project is the central component of our university subject 'RSP,' which stands for Software Project Management.
