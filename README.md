@@ -1,7 +1,9 @@
 # linzenyr-soft 
 <sub> (Team Project) </sub>
 
- :gb:🏴󠁧󠁢󠁥󠁮󠁧󠁿 [English version of Readme](README.en.md) 🇺🇸🇦🇺
+### Projekt je dostupný na [stránce](https://alpha.kts.vspj.cz/~dvora230/RSP/) 
+
+:gb:🏴󠁧󠁢󠁥󠁮󠁧󠁿 [English version of Readme](README.en.md) 🇺🇸🇦🇺
 
 Školní projekt do předmětu: Řízení softwarových projektů, VSPJ
 
