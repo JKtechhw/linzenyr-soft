@@ -1,0 +1,19 @@
+@import "_variables";
+
+body {
+    font-family: $font-roboto;
+    padding: 0;
+    margin: 0;
+}
+
+#content-container {
+    min-height: 100dvh;
+    max-width: 1200px;
+    width: 100dvw;
+    display: flex;
+    margin: auto;
+}
+
+@import "_nav";
+@import "_mainContent";
+@import "_authors";
