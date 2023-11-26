@@ -1,0 +1,118 @@
+@import "_variables";
+
+body {
+    font-family: $font-roboto;
+    padding: 0;
+    margin: 0;
+}
+
+@import "_elements";
+
+#login-content {
+    height: 100dvh;
+    display: flex;
+    width: 100%;
+
+    .box {
+        flex: 1;
+    }
+
+    .description-box {
+        background-color: $color-orange-dark;
+        box-sizing: border-box;
+        flex-direction: column;
+        padding-left: 70px;
+        padding-top: 70px;
+        display: flex;
+        height: 100%;
+
+        img {
+            filter: brightness(2);
+            max-width: 100%;
+            width: 300px;
+        }
+
+        h2 {
+            margin-left: 25px;
+            max-width: 340px;
+            color: #ffffff;
+            font-weight: 400;
+            font-size: 32px;
+        }
+    }
+
+    .form-box {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        h3 {
+            line-height: 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        form {
+            label {
+                margin-bottom: 14px;
+                display: block;
+                width: 350px;
+
+                input {
+                    border: 1px solid rgba(138,150,163,.25);
+                    transition: 0.1s border;
+                    box-sizing: border-box;
+                    padding: 16px 14px;
+                    border-radius: 6px;
+                    font-size: 16px;
+                    outline: none;
+                    width: 100%;
+
+                    &:hover {
+                        border: 1px solid rgba(138,150,163,.87);
+                    }
+
+                    &:focus {
+                        border: 1px solid $color-orange-light;
+                    }
+
+                    &.invalid {
+                        border: 1px solid #ff6060;
+                    }
+                }
+            }
+
+            button[type="submit"] {
+                background-color: $color-orange-light;
+                text-transform: uppercase;
+                transition: 0.2s filter;
+                border-radius: 300px;
+                user-select: none;
+                font-weight: 500;
+                color: #fefefe;
+                font-size: 14px;
+                margin: 10px 0;
+                padding: 10px;
+                width: 100%;
+
+                &:hover {
+                    filter: brightness(0.8);
+                }
+
+                &:disabled {
+                    background-color: rgba(138,150,163,.75);
+                    pointer-events: none;
+                    opacity: 0.4;
+                }
+            }
+
+            a {
+                color: $color-orange-dark;
+                text-decoration: none;
+                margin: 10px auto;
+                font-size: 14px;
+                display: table;
+            }
+        }
+    }
+}

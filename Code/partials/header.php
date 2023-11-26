@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="login/">
                         <i class="bi bi-person"></i>
                         <span>Účet</span>
                     </a>
