@@ -47,7 +47,6 @@ Zkopírujeme vzorový soubor *dbExample.php* a uložíme do stejného adresáře
 ```
 cd config/
 cp dbExample.php db.php
-
 ```
 
 
