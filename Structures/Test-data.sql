@@ -6,15 +6,15 @@ INSERT INTO roles (roleID, name) VALUES
 (5, 'administrátor');
 
 INSERT INTO users (userID, firstname, lastname, login, password, role) VALUES
-(1, 'Vojtěch', 'Kratochvíl', 'kratas', 'password123', 1),
-(2, 'David', 'Malinha', 'cavemanspongebob', 'pass456', 2),
-(3, 'Dominik', 'Dořák', 'gramer', 'securepass', 3),
-(4, 'Michal', 'Kuřák', 'darilin', 'qwerty', 4),
-(5, 'Rudolf', 'Doležal', 'rudys', 'adminpass', 5),
-(6, 'Jane', 'Smith', 'jane_smith', 'securepass456', 1),
-(7, 'Bob', 'Johnson', 'bob_johnson', 'strongpassword789', 1),
-(8, 'Alice', 'Johnson', 'alice_johnson', 'pass1234', 1),
-(9, 'Charlie', 'Brown', 'charlie_brown', 'securepass789', 1);
+(1, 'Vojtěch', 'Kratochvíl', 'kratas', '$2y$10$Mr8Ru0nsIDllYlppDnm3z.sOCNJe394AJhNS7eylgdRZJDudwum9y', 1),
+(2, 'David', 'Malinha', 'cavemanspongebob', '$2y$10$ctaglWluI5M2lkqMflvJCOrfkQs4FSuZ.kb7yB8GFolb50N4viigO', 2),
+(3, 'Dominik', 'Dořák', 'gramer', '$2y$10$GVXpKdurW3xBUy5zNpYcK.lXB3//xLtQpkCbdb0TYdaPHHi1iWjde', 3),
+(4, 'Michal', 'Kuřák', 'darilin', '$2y$10$0dpDzJ6YsLS73EgS0xSDceXQg6Czj4z6A01oXpjvmQNZzKhuwOEt2', 4),
+(5, 'Rudolf', 'Doležal', 'rudys', '$2y$10$35DosTLOXnInebzEg0ZMRemljo7cQM0qR9ZOSQYLpD8JIjhRBAKyq', 5),
+(6, 'Jane', 'Smith', 'jane_smith', '$2y$10$aQ.XAQLtWYae4loR6CIolOieaVSTkBZfbs1eR2VfgGrwd5pifKBjS', 1),
+(7, 'Bob', 'Johnson', 'bob_johnson', '$2y$10$w/iUe4SIPTd5qlSqvXN4aergLb6py0uiwnr5SNVLsUBDApBVGxLuK', 1),
+(8, 'Alice', 'Johnson', 'alice_johnson', '$2y$10$t0cVOwgsj9ihTIwoiA85QubkybrdQF/RE/RsPOr9NDDTudW/sBwMC', 1),
+(9, 'Charlie', 'Brown', 'charlie_brown', '$2y$10$44M6mCjJ2Ob5Jp9er1MnYOHns4Av4URymxgGOjIX9wxysYMYjYw0.', 1);
 
 INSERT INTO articles (articleID, title, author, text, status) VALUES
 (1, 'Introduction to SQL', 1, 'This is a sample article about SQL.', 0),

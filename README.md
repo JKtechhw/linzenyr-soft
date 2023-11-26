@@ -6,7 +6,7 @@
 
 - [O projektu](#o-projektu)
 - [Instalace](#instalace)
-- [Použité zdroje](#použité-zdroje)
+- [Použití](#použití)
 
 ## O projektu
 Jedná se o školní projekt do předmětu *Řízení softwarových projektů*. Jedná se o webovou aplikaci, s redakčním systémem pro psaní článků. 
@@ -49,3 +49,14 @@ cd config/
 cp dbExample.php db.php
 
 ```
+
+
+### Testovací data
+
+Pokud chcete před finálním nasazením otestovat funkčnost a rozhraní aplikace, je možné použít testovací data DB
+
+```
+mysql -h hostname -u user database < ./Structures/Test-data.sql
+```
+
+Pro každého uživatele je **heslo stejné jako login**, seznam uživatelů je v souboru: *Test-data.sql*

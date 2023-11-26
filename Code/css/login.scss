@@ -82,10 +82,16 @@ body {
                 }
             }
 
+            .error-message {
+                display: list-item;
+                margin-left: 20px;
+                color: #ff6060;
+            }
+
             button[type="submit"] {
+                transition: 0.2s filter, 0.2s background, 0.2s opacity;
                 background-color: $color-orange-light;
                 text-transform: uppercase;
-                transition: 0.2s filter;
                 border-radius: 300px;
                 user-select: none;
                 font-weight: 500;

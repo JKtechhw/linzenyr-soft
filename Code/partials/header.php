@@ -10,7 +10,7 @@
     <title>Srsťoplsť</title>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="icon" type="image/png" href="assets/Images/logo-short.png" />
-    <script src="js/index.js"></script>
+    <script src="js/index.js" defer></script>
 </head>
 <body>
     <div id="content-container">
