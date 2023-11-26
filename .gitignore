@@ -1,0 +1,13 @@
+# Ignore compiled files
+*.css
+*.map
+
+# Ignore db connection file
+Code/config/db.php
+
+# Ignore multimedia files
+Code/assets/**/*[.png, .jpg, .gif]
+
+# Allow default files
+!Code/assets/avatars/default.png
+!Code/assets/Images/*
