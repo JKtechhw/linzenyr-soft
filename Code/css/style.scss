@@ -13,7 +13,14 @@ body {
     display: flex;
     margin: auto;
 }
+
 @import "_elements";
 @import "_nav";
 @import "_mainContent";
 @import "_suggestions";
+
+@media screen and (min-width: 1500px) {
+    #content-container {
+        max-width: 1350px;
+    }
+}

@@ -3,69 +3,81 @@
 
     $tags = Db::queryAll("SELECT * FROM tags");
     $articles = Db::queryAll("
-        SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
+        SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, users.login, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
         FROM articles
         INNER JOIN users ON articles.author = users.userID
     ");
 ?>
 
-<main id="page-content">
+<main>
     <div id="content-header">
         <h3>Články</h3>
     </div>
 
-    <?php
-        if(count($tags) > 0) {
-    ?>
-        <div class="tags-row">
-            <button class="tag selected">Vše</button>
+    <div id="page-content">
+        <?php
+            if(count($tags) > 0) {
+        ?>
+            <div class="tags-row">
+                <button class="tag selected">Vše</button>
+                <?php 
+                    foreach($tags as $tag) {
+                        ?>
+                            <button class="tag"><?php echo($tag["name"]); ?></button>
+                        <?php
+                    }
+                ?>
+            </div>
+        <?php
+            }
+        ?>
+        <div class="articles-box">
+            <?php
+                if(count($tags) == 0) {
+            ?>
+
+            <div class="box-message">
+                <h1 class="box-message-title">Žádný článek nebyl nalezen</h1>
+                <h3 class="box-message-description">Zkuste upravit filtry</h3>
+            </div>
+
             <?php 
-                foreach($tags as $tag) {
-                    ?>
-                        <button class="tag"><?php echo($tag["name"]); ?></button>
-                    <?php
+                }
+
+                else {
+                    foreach($articles as $article) {
+            ?>
+                    <div class="article">
+                        <div class="article-header">
+                            <img class="author-avatar" src="assets/avatars/<?php echo($article["avatar"]); ?>" />
+                            <div class="author-detail">
+                                <h6 class="author-name"><?php echo($article["author"]); ?></h6>
+                                <p class="author-username">@<?php echo($article["login"]); ?></p>
+                            </div>
+                        </div>
+
+
+                        <?php 
+                            if($article["banner"] != null && file_exists("assets/banners/" . $article["banner"])) {
+                                ?>
+                                    <div class="article-banner">
+                                        <img src="<?php echo("assets/banners/1.jpg"); ?>">
+                                    </div>
+                                <?php
+                            }
+                        ?>
+
+                        <h1 class="article-title"><?php echo($article["title"]); ?></h1>
+                        <p class="article-text">
+                            <?php echo($article["text"]); ?>
+                        </p>
+                    </div>
+            <?php 
+                    }
                 }
             ?>
         </div>
-    <?php
-        }
-    ?>
-
-    <div class="articles-box">
-        <?php
-            if(count($tags) == 0) {
-        ?>
-
-        <div class="box-message">
-            <h1 class="box-message-title">Žádný článek nebyl nalezen</h1>
-            <h3 class="box-message-description">Zkuste upravit filtry</h3>
-        </div>
-
-        <?php 
-            }
-
-            else {
-                foreach($articles as $article) {
-        ?>
-                <div class="article">
-                    <div class="article-header">
-                        <img class="author-avatar" src="assets/avatars/<?php echo($article["avatar"]); ?>" />
-                        <h6 class="author-name"><?php echo($article["author"]); ?></h6>
-
-                        <?php 
-                            if($article["banner"] != null) {
-                                
-                            }
-                        ?>
-                        
-                    </div>
-                </div>
-        <?php 
-                }
-            }
-        ?>
     </div>
-
 </main>
 
 <div id="suggestions-container">
