@@ -1,11 +1,11 @@
-INSERT INTO Role (id, název) VALUES
+INSERT INTO roles (roleID, name) VALUES
 (1, 'autor'),
 (2, 'redaktor'),
 (3, 'recenzent'),
 (4, 'šéfredaktor'),
 (5, 'administrátor');
 
-INSERT INTO Uživatelé (id, Jméno, Příjmení, login, password, role) VALUES
+INSERT INTO users (userID, firstname, lastname, login, password, role) VALUES
 (1, 'John', 'Doe', 'john_doe', 'password123', 1),
 (2, 'Jane', 'Smith', 'jane_smith', 'pass456', 2),
 (3, 'Alice', 'Johnson', 'alice_j', 'securepass', 3),
@@ -16,7 +16,7 @@ INSERT INTO Uživatelé (id, Jméno, Příjmení, login, password, role) VALUES
 (8, 'Alice', 'Johnson', 'alice_johnson', 'pass1234', 1),
 (9, 'Charlie', 'Brown', 'charlie_brown', 'securepass789', 1);
 
-INSERT INTO články (id, Název, autor, text, status) VALUES
+INSERT INTO articles (articleID, title, author, text, status) VALUES
 (1, 'Introduction to SQL', 1, 'This is a sample article about SQL.', 0),
 (2, 'Data Modeling Techniques', 7, 'Learn about various data modeling techniques.', 1),
 (3, 'Journalistic Writing Tips', 7, 'Improve your journalistic writing skills.', 0),
@@ -25,29 +25,29 @@ INSERT INTO články (id, Název, autor, text, status) VALUES
 (6, 'David Malinda', 7, 'GImprove your journalistic writing skills.', 2),
 (7, 'David Lišska', 1, 'Learn about various data modeling techniques.', 2);
 
-INSERT INTO kontrola (id, článek, redaktor) VALUES
+INSERT INTO validations (validationID, article, redactor) VALUES
 (1, 2, 2);
 
-INSERT INTO recenze (id, kontrola, text, recenzent) VALUES
+INSERT INTO reviews (reviewID, validation, text, reviewer) VALUES
 (1, 1, 'Good article overall.', 3);
 
-INSERT INTO vydání (id, datum, označení, nadpis) VALUES
+INSERT INTO editions (editionID, date, basename, title) VALUES
 (1, '2023-01-15', 'číslo-1', 'January 2023'),
 (2, '2023-02-20', 'číslo-2', 'February 2023');
 
-INSERT INTO tagy (id, název) VALUES
+INSERT INTO tags (tagID, name) VALUES
 (1, 'exotické zvířata'),
 (2, 'domáce zvířata'),
 (3, 'chovatelké potřeby'),
 (4, 'chované zvířata');
 
-INSERT INTO článek_vydání (id, článek, vydání, pořadí) VALUES
+INSERT INTO article_edition (article_editionID, article, editionID, `order`) VALUES
 (1, 4, 1, 1),
 (2, 2, 1, 2),
 (3, 6, 1, 3),
 (4, 7, 2, 1);
 
-INSERT INTO článek_tag (článek, tag) VALUES
+INSERT INTO article_tag (article, tag) VALUES
 (1, 1),
 (2, 1),
 (3, 2),
