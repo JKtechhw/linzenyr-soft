@@ -10,12 +10,12 @@ nav {
             margin-left: 20px;
 
             a {
-                color: $gray-light-color;
                 text-decoration: none;
                 display: inline-flex;
-                border-radius: 12px;
+                border-radius: 20px;
                 align-items: center;
-                padding: 5px 12px;
+                color: $nav-color;
+                padding: 8px 20px;
                 line-height: 24px;
                 font-weight: 500;
                 font-size: 19px;
@@ -25,7 +25,9 @@ nav {
                 }
 
                 &:hover {
-                    background-color: $color-orange-light-opacity;
+                    transition: color 0.1s, background-color 0.1s;
+                    background-color: $nav-hover-background;
+                    color: $nav-hover-color;
                 }
 
                 i {
@@ -35,9 +37,33 @@ nav {
 
             &.active {
                 a {
-                    color: #000000;
+                    color: $nav-active-color;
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 1275px) {
+    nav {
+        width: 100px;
+
+        ul {
+            li {
+                a {
+                    padding: 12px;
+
+                    span {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #authors-container {
+        display: none;
     }
 }

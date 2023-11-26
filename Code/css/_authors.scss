@@ -1,3 +1,17 @@
 #authors-container {
+    padding: 20px 10px;
     width: 200px;
+
+    #search-box {
+        width: 100%;
+
+        input[type="search"] {
+            border: 1px solid $search-border;
+            box-sizing: border-box;
+            border-radius: 4px;
+            outline: none;
+            padding: 8px;
+            width: 100%;
+        }
+    }
 }

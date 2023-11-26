@@ -6,10 +6,18 @@
 
 //Colors
 $color-orange-light: #fc6d26;
-$color-orange-light-opacity: rgba($color-orange-light, 0.1);
 $color-orange-dark: #e24329;
 $color-box-border: #f2f2f2;
 $gray-light-color: #dbdbdb;
+
+//Navbar
+$nav-hover-background: rgba($color-orange-light, 0.05);
+$nav-hover-color: $color-orange-light;
+$nav-color: $gray-light-color;
+$nav-active-color: #000000;
+
+//Search
+$search-border: lightgray;
 
 $font-roboto: 'Roboto', sans-serif;
 $font-bootstrap-icons: "bootstrap-icons";
