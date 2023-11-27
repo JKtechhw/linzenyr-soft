@@ -1,10 +1,19 @@
-<?php 
+<?php
+    $request_url = $_SERVER['REQUEST_URI'];
+
+    if (strpos($request_url, '.php') !== false && substr($request_url, -4) === '.php') {
+        http_response_code(403);
+        echo "Error 403";
+        exit();
+    } 
+
     require_once(__DIR__ . "/../src/dbConnect.php");
 
     if(isset($pathToSources) == false) {
         $pathToSources = "";
     }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

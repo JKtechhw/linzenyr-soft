@@ -46,7 +46,7 @@
         }
 
         $user = Db::queryOne("
-            SELECT users.*, CONCAT(users.firstname, \" \", users.lastname) AS fullName, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
+            SELECT users.*, CONCAT(users.firstname, \" \", users.lastname) AS fullName, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar, roles.name AS roleName
             FROM users 
             INNER JOIN roles ON users.role = roles.roleID
             WHERE login = ?
@@ -78,6 +78,7 @@
         $_SESSION["avatar"] = $user["avatar"];
         $_SESSION["fullName"] = $user["fullName"];
         $_SESSION["login"] = $user["login"];
+        $_SESSION["roleName"] = $user["roleName"];
 
         $responseText = array(
             "success" => false,
@@ -93,7 +94,11 @@
         include("../partials/userHeader.php");
     ?>
 
-    <main></main>
+    <main>
+        <div class="table-box">
+            
+        </div>
+    </main>
 
     <?php
         include("../partials/footer.php");

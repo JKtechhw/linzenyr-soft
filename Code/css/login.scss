@@ -53,6 +53,8 @@ body {
         }
 
         form {
+            margin: 0 20px;
+
             label {
                 margin-bottom: 14px;
                 display: block;
@@ -119,6 +121,14 @@ body {
                 font-size: 14px;
                 display: table;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #login-content {
+        .description-box {
+            display: none;
         }
     }
 }

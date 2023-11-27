@@ -22,13 +22,20 @@ body {
 .user-nav {
     .user-data {
         justify-content: center;
+        align-items: center;
         margin-top: 49px;
         display: flex;
 
         img {
+            object-position: center;
             border-radius: 100%;
+            object-fit: cover;
             height: 48px;
             width: 48px;
+        }
+
+        .user-detail {
+            margin-left: 5px;
         }
 
         .user-name {
