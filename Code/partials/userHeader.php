@@ -18,7 +18,16 @@
 </head>
 <body>
     <div id="content-container">
-        <nav id="nav">
+        <nav id="nav" class="user-nav">
+            <div id="user-data">
+                <img src="<?php echo($pathToSources); ?>assets/avatars/<?php echo($_SESSION["avatar"]); ?>">
+
+                <div class="user-detail">
+                    <h2><?php echo($_SESSION["fullName"]); ?></h2>
+                    <h2>@<?php echo($_SESSION["login"]); ?></h2>
+                </div>
+            </div>
+
             <ul>
                 <li class="active">
                     <a href="<?php echo($pathToSources); ?>#">
@@ -29,22 +38,15 @@
 
                 <li>
                     <a href="<?php echo($pathToSources); ?>#">
-                        <i class="bi bi-newspaper"></i> 
-                        <span>Vydání</span>
+                        <i class="bi bi-info-square"></i>
+                        <span>Helpdesk</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="<?php echo($pathToSources); ?>account/">
-                        <i class="bi bi-person"></i>
-                        <span>Účet</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="<?php echo($pathToSources); ?>">
-                        <i class="bi bi-info-circle"></i>
-                        <span>O nás</span>
+                    <a href="<?php echo($pathToSources); ?>#">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>Odhlásit</span>
                     </a>
                 </li>
             </ul>
