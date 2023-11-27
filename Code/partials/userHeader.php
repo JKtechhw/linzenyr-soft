@@ -12,19 +12,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Srsťoplsť</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo($pathToSources); ?>css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo($pathToSources); ?>css/user.css" />
     <link rel="icon" type="image/png" href="<?php echo($pathToSources); ?>assets/Images/logo-short.png" />
     <script src="<?php echo($pathToSources); ?>js/index.js" defer></script>
 </head>
 <body>
     <div id="content-container">
         <nav id="nav" class="user-nav">
-            <div id="user-data">
+            <div class="user-data">
                 <img src="<?php echo($pathToSources); ?>assets/avatars/<?php echo($_SESSION["avatar"]); ?>">
 
                 <div class="user-detail">
-                    <h2><?php echo($_SESSION["fullName"]); ?></h2>
-                    <h2>@<?php echo($_SESSION["login"]); ?></h2>
+                    <h2 class="user-name"><?php echo($_SESSION["fullName"]); ?></h2>
+                    <h2 class="user-username">@<?php echo($_SESSION["login"]); ?></h2>
                 </div>
             </div>
 

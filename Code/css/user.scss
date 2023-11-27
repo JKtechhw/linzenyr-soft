@@ -19,6 +19,37 @@ body {
 @import "_mainContent";
 @import "_suggestions";
 
+.user-nav {
+    .user-data {
+        justify-content: center;
+        margin-top: 49px;
+        display: flex;
+
+        img {
+            border-radius: 100%;
+            height: 48px;
+            width: 48px;
+        }
+
+        .user-name {
+            margin: 0 0 5px 0;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .user-username {
+            color: #8a96a3;
+            font-weight: 400;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+
+    ul {
+        margin-top: 82px;
+    }
+}
+
 @media screen and (min-width: 1500px) {
     #content-container {
         max-width: 1350px;

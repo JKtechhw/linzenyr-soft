@@ -20,8 +20,6 @@ form.addEventListener("submit", async (e) => {
 
     const responseJson = await submitFetch.json();
 
-    console.log(responseJson)
-
     if(submitFetch?.ok) {
         window.location.reload();
     }
