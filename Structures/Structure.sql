@@ -1,10 +1,10 @@
 CREATE TABLE roles (
-    roleID INT PRIMARY KEY,
+    roleID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255)
 );
 
 CREATE TABLE users (
-    userID INT PRIMARY KEY,
+    userID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255),
     lastname VARCHAR(255),
     avatar VARCHAR(255) DEFAULT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE articles (
-    articleID INT PRIMARY KEY,
+    articleID INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     title VARCHAR(255),
     author INT,
     banner VARCHAR(255) DEFAULT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE articles (
 );
 
 CREATE TABLE validations (
-    validationID INT PRIMARY KEY,
+    validationID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     article INT,
     redactor INT,
     FOREIGN KEY (article) REFERENCES articles(articleID),
@@ -33,7 +33,7 @@ CREATE TABLE validations (
 );
 
 CREATE TABLE reviews (
-    reviewID INT PRIMARY KEY,
+    reviewID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     validation INT,
     text TEXT,
     reviewer INT,
@@ -42,14 +42,14 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE editions (
-    editionID INT PRIMARY KEY,
+    editionID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     date DATE,
     basename VARCHAR(255),
     title VARCHAR(255)
 );
 
 CREATE TABLE article_edition (
-    `article_editionID` INT PRIMARY KEY,
+    `article_editionID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `article` INT,
     `editionID` INT,
     `order` INT,
@@ -58,7 +58,7 @@ CREATE TABLE article_edition (
 );
 
 CREATE TABLE tags (
-    tagID INT PRIMARY KEY,
+    tagID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255)
 );
 

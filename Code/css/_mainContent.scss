@@ -42,6 +42,7 @@ main {
             padding: 5px 15px;
             font-weight: 300;
             font-size: 1rem;
+            margin: 0 5px;
 
             &.selected {
                 background-color: rgba($color-orange-light, 0.7);

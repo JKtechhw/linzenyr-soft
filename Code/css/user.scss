@@ -73,11 +73,23 @@ body {
     }
 }
 
-// @media screen and (min-width: 1500px) {
-//     #content-container {
-//         max-width: 1350px;
-//     }
-// }
+.add-article {
+    form {
+        box-sizing: border-box;
+        padding: 10px;
+        width: 100%;
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .buttons-row {
+            justify-content: flex-end;
+            display: flex;
+        }
+    }
+}
 
 @media screen and (max-width: 1275px) {
     .user-nav {

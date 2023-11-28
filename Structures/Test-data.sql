@@ -23,7 +23,7 @@ INSERT INTO articles (articleID, title, author, text, status) VALUES
 (4, 'Database Security Best Practices', 8, 'Secure your databases with these practices.', 2),
 (5, 'Inženír Malinda', 8, 'This is a sample article about SQL.', 2),
 (6, 'David Malinda', 7, 'GImprove your journalistic writing skills.', 2),
-(7, 'David Lišska', 1, 'Learn about various data modeling techniques.', 2);
+(7, 'David Liška', 1, 'Learn about various data modeling techniques.', 2);
 
 INSERT INTO validations (validationID, article, redactor) VALUES
 (1, 2, 2);

@@ -25,3 +25,21 @@ logoutElements.forEach(element => {
         }
     });
 });
+
+const forms = document.querySelectorAll("form");
+forms.forEach(form => {
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const FD = new FormData(form);
+        
+        const submitFetch = await fetch(form.action, {
+            method: form.method,
+            body: FD
+        });
+
+        const responseJson = await submitFetch.json();
+
+        console.log(responseJson);
+
+    });
+})
