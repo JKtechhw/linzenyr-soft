@@ -5,12 +5,14 @@
         require_once("../src/dbConnect.php");
         header('Content-Type: application/json; charset=utf-8');
 
-        if(isset($_POST["action-page"]) == false || $_POST["action-page"] == "articles") {
-            include("userPages/articles.php");
-        }
-
-        else if($_POST["action-page"] == "new-article") {
-            include("userPages/newArticle.php");
+        if(isset($_POST["action-page"])) {
+            if($_POST["action-page"] == "articles") {
+                include("userPages/articles.php");
+            }
+    
+            else if($_POST["action-page"] == "new-article") {
+                include("userPages/newArticle.php");
+            }
         }
 
         else {

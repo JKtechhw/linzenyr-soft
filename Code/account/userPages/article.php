@@ -31,7 +31,7 @@
         if(isset($_POST["article-tags"]) == false || empty($_POST["article-title"])) {
             $responseText = array(
                 "success" => false,
-                "error-field" => "article-tags[]",
+                "error-field" => "article-tags",
                 "message" => "Vyplňte všechny povinné údaje"
             );
 
@@ -218,6 +218,7 @@
         </label>
 
         <div class="buttons-row">
+            <button type="button" class="theme-button">Odeslat ke kontrole</button>
             <button type="submit" class="theme-button">Uložit</button>
         </div>
     </form>

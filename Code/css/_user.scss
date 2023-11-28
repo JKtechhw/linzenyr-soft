@@ -56,75 +56,115 @@
     }
 }
 
-.add-article {
-    form {
-        box-sizing: border-box;
-        padding: 10px;
+form {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+
+    label {
+        position: relative;
+        display: block;
+        margin: 10px 0;
         width: 100%;
 
-        label {
-            position: relative;
+        span {
             display: block;
-            margin: 10px 0;
+            margin: 5px;
+        }
+
+        input {
+            border: 1px solid $search-border;
+            box-sizing: border-box;
+            border-radius: 6px;
+            padding: 14px 16px;
+            line-height: 20px;
+            font-size: 16px;
+            outline: none;
             width: 100%;
 
-            span {
-                display: block;
-                margin: 5px;
+            &:focus {
+                border: 1px solid $color-orange-light;
             }
 
-            input {
-                border: 1px solid $search-border;
-                box-sizing: border-box;
-                border-radius: 6px;
-                padding: 14px 16px;
-                line-height: 20px;
-                font-size: 16px;
-                outline: none;
-                width: 100%;
-            }
+            &.error-field {
+                border: 1px solid red;
 
-            input[type="text"] {
                 & + span {
-                    transition: 0.2s top, 0.2s font-size;
-                    color: $input-placeholder-color;
-                    transform: translateY(-50%);
-                    background-color: #ffffff;
-                    pointer-events: none;
-                    position: absolute;
-                    user-select: none;
-                    padding: 0 5px;
-                    left: 15px;
-                    margin: 0;
-                    top: 50%;
-                }
-
-                &:focus {
-                    border: 1px solid $color-orange-light;
-
-                    + span {
-                        color: $color-orange-light;
-                    }
-                }
-
-                &:not(:placeholder-shown), &:focus {
-                    + span {
-                        font-size: 13px;
-                        top: 0;
-                    }
+                    color: red !important;
                 }
             }
         }
 
-        .buttons-row {
-            justify-content: flex-end;
-            display: flex;
+        input[type="text"] {
+            & + span {
+                transition: 0.2s top, 0.2s font-size;
+                color: $input-placeholder-color;
+                transform: translateY(-50%);
+                background-color: #ffffff;
+                pointer-events: none;
+                position: absolute;
+                user-select: none;
+                padding: 0 5px;
+                left: 15px;
+                margin: 0;
+                top: 50%;
+            }
+
+            &:focus {
+                + span {
+                    color: $color-orange-light;
+                }
+            }
+
+            &:not(:placeholder-shown), &:focus {
+                + span {
+                    font-size: 13px;
+                    top: 0;
+                }
+            }
         }
+    }
+
+    .buttons-row {
+        justify-content: flex-end;
+        display: flex;
+    }
+
+    .error-message {
+        background-color: #ff000014;
+        box-sizing: border-box;
+        color: #ff0000;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .success-message {
+        background-color: rgba(0, 255, 0, 0.078);
+        box-sizing: border-box;
+        color: #255d25;
+        padding: 10px;
+        width: 100%;
     }
 }
 
 .select-multiple {
     position: relative;
+
+    &.active {
+        .select-multiple-trigger {
+            border: 1px solid $color-orange-light;
+        }
+    }
+
+    &.error-field {
+        .select-multiple-trigger {
+            border: 1px solid red;
+        }
+
+        .select-multiple-placeholder {
+            color: red !important;
+        }
+    }
 
     .select-multiple-trigger {
         border: 1px solid $search-border;

@@ -6,7 +6,7 @@ logoutElements.forEach(element => {
         const FD = new FormData();
         FD.append("logout", "1");
 
-        console.log(element.href)
+        console.log(element.href.endsWith("/") ? element.href : element.href +"/")
 
         const logoutFetch = await fetch(element.href.endsWith("/") ? element.href : element.href +"/", {
             method: "POST",
@@ -30,6 +30,20 @@ const forms = document.querySelectorAll("form");
 forms.forEach(form => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        const submitButton = form.querySelector("button[type=\"submit\"]");
+        submitButton.disabled = true;
+
+        const errorFields = form.querySelectorAll(".error-field");
+        errorFields.forEach(element => {
+            element.classList.remove("error-field");
+        });
+
+        const errorMessages = form.querySelectorAll(".error-message");
+        errorMessages.forEach(element => {
+            element.remove();
+        });
+
         if(typeof tinymce != "undefined") {
             tinymce.triggerSave();
         }
@@ -47,7 +61,55 @@ forms.forEach(form => {
         const responseJson = await submitFetch.json();
 
         console.log(responseJson);
+        if(submitFetch?.ok) {
+            const successMessageElement = document.createElement("p");
+            successMessageElement.classList.add("success-message");
+            successMessageElement.textContent = responseJson.message;
 
+            if(form.querySelector(".buttons-row") == null) {
+                form.querySelector("button[type=\"submit\"]").insertAdjacentElement("beforebegin", successMessageElement);
+            }
+
+            else {
+                form.querySelector(".buttons-row").insertAdjacentElement("beforebegin", successMessageElement);
+            }
+        }
+
+        else {
+            if(typeof responseJson["error-field"] != "undefined") {
+                let errorFieldElement = form.querySelector(`[name="${responseJson["error-field"]}"]`);
+
+                if(errorFieldElement == null) {
+                    errorFieldElement = form.querySelector(`[data-name="${responseJson["error-field"]}"]`);
+                }
+
+                errorFieldElement?.classList?.add("error-field");
+            }
+
+            let errorMessage;
+
+            if(typeof responseJson["message"] != "undefined") {
+                errorMessage = responseJson["message"];
+            }
+
+            else {
+                errorMessage = "Došlo k neznámé chybě, zkuste to znovu později, pokud chyba přetrvá, využijte helpdesk";
+            }
+
+            const errorMessageElement = document.createElement("p");
+            errorMessageElement.classList.add("error-message");
+            errorMessageElement.textContent = errorMessage;
+
+            submitButton.disabled = false;
+
+            if(form.querySelector(".buttons-row") == null) {
+                form.querySelector("button[type=\"submit\"]").insertAdjacentElement("beforebegin", errorMessageElement);
+            }
+
+            else {
+                form.querySelector(".buttons-row").insertAdjacentElement("beforebegin", errorMessageElement);
+            }
+        }
     });
 });
 
@@ -76,11 +138,13 @@ selectMultipleElements.forEach(selectBox => {
 
     function hideOptions(e) {
         if(typeof e == "undefined") {
+            selectBox.classList.remove("active");
             optionsBox.classList.remove("active");
             return;
         }
         
         if(selectBox.contains(e.target) == false) {
+            selectBox.classList.remove("active");
             optionsBox.classList.remove("active");
             document.body.removeEventListener("click", hideOptions);
         }
@@ -89,11 +153,13 @@ selectMultipleElements.forEach(selectBox => {
     triggerBox.addEventListener("click", (e) => {
         if(e.target == e.currentTarget) {
             if(optionsBox.classList.contains("active")) {
+                selectBox.classList.remove("active");
                 optionsBox.classList.remove("active");
                 document.body.removeEventListener("click", hideOptions);
             }
 
             else {
+                selectBox.classList.add("active");
                 optionsBox.classList.add("active");
                 document.body.addEventListener("click", hideOptions);
             }
@@ -136,5 +202,4 @@ selectMultipleElements.forEach(selectBox => {
             updateInputs();
         });
     }
-
 });

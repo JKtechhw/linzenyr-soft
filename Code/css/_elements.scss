@@ -40,4 +40,10 @@ input {
     &:hover {
         background-color: $color-orange-dark;
     }
+
+    &:disabled {
+        background-color: rgba(138,150,163,.75);
+        pointer-events: none;
+        opacity: 0.4;
+    }
 }
