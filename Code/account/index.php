@@ -17,7 +17,7 @@
             );
 
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-            return;
+            exit();
         }
 
         if(isset($_POST["username"]) == false || empty($_POST["username"])) {
@@ -30,7 +30,7 @@
             http_response_code(400);
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
 
-            return;
+            exit();
         }
 
         if(isset($_POST["password"]) == false || empty($_POST["password"])) {
@@ -42,11 +42,11 @@
             
             http_response_code(400);
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-            return;
+            exit();
         }
 
         $user = Db::queryOne("
-            SELECT users.*, CONCAT(users.firstname, \" \", users.lastname) AS fullName, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar, roles.name AS roleName
+            SELECT users.*, CONCAT(users.firstname, \" \", users.lastname) AS full_name, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar, roles.name AS role_name
             FROM users 
             INNER JOIN roles ON users.role = roles.roleID
             WHERE login = ?
@@ -59,7 +59,7 @@
             
             http_response_code(400);
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-            return;
+            exit();
         }
 
         if(password_verify($_POST["password"], $user["password"]) == false) {
@@ -70,15 +70,15 @@
             
             http_response_code(400);
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-            return;
+            exit();
         }
 
         $_SESSION["logged"] = true;
         $_SESSION["user_id"] = $user["userID"];
         $_SESSION["avatar"] = $user["avatar"];
-        $_SESSION["fullName"] = $user["fullName"];
+        $_SESSION["full_name"] = $user["full_name"];
         $_SESSION["login"] = $user["login"];
-        $_SESSION["roleName"] = $user["roleName"];
+        $_SESSION["role_name"] = $user["role_name"];
 
         $responseText = array(
             "success" => false,
@@ -86,22 +86,65 @@
         );
         
         echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-        return;
+        exit();
     }
 
     if(isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
+        //* Author part
         $pathToSources = "../";
         include("../partials/userHeader.php");
+
+        $articles = Db::queryAll("SELECT * FROM articles WHERE author = ?", $_SESSION["user_id"]);
     ?>
 
     <main>
         <div class="table-box">
-            
+            <div class="table-box-header">
+                <h1>Vaše články</h1>
+
+                <a href="new-article">Přidat článek</a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        foreach($articles as $article) {
+                    ?>
+                        <tr>
+                            <td>
+                                <?php 
+                                    echo($article["title"]);
+                                ?>
+                            </td>
+
+                            <td>
+                                <?php 
+                                    echo($article["status"]);
+                                ?>
+                            </td>
+
+                            <td>
+                                <button>Status</button>
+                            </td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                </tbody>
+            </table>
         </div>
     </main>
 
     <?php
         include("../partials/footer.php");
+        //* End of author part
     }
 
     else {

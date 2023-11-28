@@ -1,9 +1,22 @@
 <?php 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if(
+        isset($_SESSION) == false || 
+        isset($_SESSION["logged"]) == false || 
+        $_SESSION["logged"] != true) {
+        http_response_code(403);
+        echo "Unauthorized";
+        exit();
+    }
+
     $request_url = $_SERVER['REQUEST_URI'];
 
     if (strpos($request_url, '.php') !== false && substr($request_url, -4) === '.php') {
         http_response_code(403);
-        echo "Error 403";
+        echo "Forbidden";
         exit();
     } 
 
@@ -28,31 +41,31 @@
     <div id="content-container">
         <nav id="nav" class="user-nav">
             <div class="user-data">
-                <img src="<?php echo($pathToSources); ?>assets/avatars/<?php echo($_SESSION["avatar"]); ?>">
+                <img src="<?php echo($pathToSources); ?>assets/avatars/<?php echo($_SESSION["avatar"]); ?>" title="<?php echo($_SESSION["full_name"]); ?>">
 
                 <div class="user-detail">
-                    <h2 class="user-name"><?php echo($_SESSION["fullName"]); ?></h2>
-                    <h2 class="user-username"><?php echo($_SESSION["roleName"]); ?></h2>
+                    <h2 class="user-name"><?php echo($_SESSION["full_name"]); ?></h2>
+                    <h2 class="user-username"><?php echo($_SESSION["role_name"]); ?></h2>
                 </div>
             </div>
 
             <ul>
                 <li class="active">
-                    <a href="#">
+                    <a href="<?php echo($pathToSources); ?>account">
                         <i class="bi bi-chat-left-text"></i> 
                         <span>Články</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="<?php echo($pathToSources); ?>account">
                         <i class="bi bi-info-square"></i>
                         <span>Helpdesk</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" class="logout">
+                    <a href="<?php echo($pathToSources); ?>account" class="logout">
                         <i class="bi bi-box-arrow-left"></i>
                         <span>Odhlásit</span>
                     </a>

@@ -57,8 +57,34 @@ body {
     }
 }
 
-@media screen and (min-width: 1500px) {
-    #content-container {
-        max-width: 1350px;
+.table-box {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+
+    .table-box-header {
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
+    }
+
+    table {
+        width: 100%;
+    }
+}
+
+// @media screen and (min-width: 1500px) {
+//     #content-container {
+//         max-width: 1350px;
+//     }
+// }
+
+@media screen and (max-width: 1275px) {
+    .user-nav {
+        .user-data {
+            .user-detail {
+                display: none;
+            }
+        }
     }
 }

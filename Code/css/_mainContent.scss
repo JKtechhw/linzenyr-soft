@@ -29,14 +29,18 @@ main {
         border-bottom: 2px solid $color-box-border;
         box-sizing: border-box;
         padding: 20px 10px;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        display: flex;
         width: 100%;
 
         .tag {
             background-color: #e1e1e1;
             transition: 0.2s filter;
             border-radius: 15px;
-            font-weight: 300;
+            white-space: nowrap;
             padding: 5px 15px;
+            font-weight: 300;
             font-size: 1rem;
 
             &.selected {
