@@ -27,6 +27,7 @@ logoutElements.forEach(element => {
 });
 
 const forms = document.querySelectorAll("form");
+console.log(forms)
 forms.forEach(form => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();

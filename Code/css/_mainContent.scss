@@ -7,17 +7,6 @@ main {
     display: flex;
     flex: 1;
 
-    #content-header {
-        border-bottom: 2px solid $color-box-border;
-        background-color: #ffffff;
-        width: 100%;
-
-        h3 {
-            display: inline-block;
-            margin-left: 20px;
-        }
-    }
-
     #page-content {
         overflow-x: hidden;
         overflow-y: auto;
@@ -122,6 +111,25 @@ main {
         .article-text {
             padding: 0 10px;
             color: #6d6d6d;
+        }
+    }
+}
+
+#content-header, .content-header {
+    border-bottom: 2px solid $color-box-border;
+    justify-content: space-between;
+    background-color: #ffffff;
+    display: flex;
+    width: 100%;
+
+    h3 {
+        vertical-align: middle;
+        display: inline-block;
+        margin-left: 10px;
+
+        .bi {
+            vertical-align: middle;
+            margin: 0 8px;
         }
     }
 }

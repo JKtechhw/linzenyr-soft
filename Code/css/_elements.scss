@@ -25,3 +25,19 @@ button {
 input {
     font-family: $font-roboto;
 }
+
+.theme-button {
+    background-color: $color-orange-light;
+    text-decoration: none;
+    border-radius: 100px;
+    padding: 8px 16px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #fefefe;
+    font-size: 14px;
+    margin: 5px;
+
+    &:hover {
+        background-color: $color-orange-dark;
+    }
+}

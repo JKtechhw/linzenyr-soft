@@ -118,13 +118,18 @@
             </label>
 
             <label>
+                <span>Banner</span>
+                <input name="article-banner" type="file" />
+            </label>
+
+            <label>
                 <span>Text</span>
                 <textarea name="article-text"></textarea>
             </label>
 
             <div class="buttons-row">
-                <button type="button">Odeslat ke kontrole</button>
-                <button type="submit">Uložit</button>
+                <button type="button" class="theme-button">Odeslat ke kontrole</button>
+                <button type="submit" class="theme-button">Uložit</button>
             </div>
         </form>
     </div>

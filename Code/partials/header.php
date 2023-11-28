@@ -12,6 +12,9 @@
     if(isset($pathToSources) == false) {
         $pathToSources = "";
     }
+
+    $segments = explode('/', trim(parse_url($request_url, PHP_URL_PATH), '/'));
+    $page = end($segments);
 ?>
 
 
@@ -29,8 +32,8 @@
     <div id="content-container">
         <nav id="nav">
             <ul>
-                <li class="active">
-                    <a href="<?php echo($pathToSources); ?>#">
+                <li>
+                    <a href="<?php echo($pathToSources); ?>">
                         <i class="bi bi-chat-left-text"></i> 
                         <span>Články</span>
                     </a>
@@ -43,7 +46,7 @@
                     </a>
                 </li>
 
-                <li>
+                <li <?php echo(($page == "account") ? 'class="active"' : "xd") ?>>
                     <a href="<?php echo($pathToSources); ?>account/">
                         <i class="bi bi-person"></i>
                         <span>Účet</span>

@@ -6,6 +6,7 @@
         SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, users.login, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
         FROM articles
         INNER JOIN users ON articles.author = users.userID
+        ORDER BY articleID DESC
     ");
 ?>
 
@@ -61,7 +62,7 @@
                             if($article["banner"] != null && file_exists("assets/banners/" . $article["banner"])) {
                                 ?>
                                     <div class="article-banner">
-                                        <img src="<?php echo("assets/banners/1.jpg"); ?>">
+                                        <img src="assets/banners/<?php echo($article["banner"]); ?>">
                                     </div>
                                 <?php
                             }

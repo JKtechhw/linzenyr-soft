@@ -1,29 +1,29 @@
 INSERT INTO roles (roleID, name) VALUES
-(1, 'autor'),
-(2, 'redaktor'),
-(3, 'recenzent'),
-(4, 'šéfredaktor'),
-(5, 'administrátor');
+(1, 'Autor'),
+(2, 'Redaktor'),
+(3, 'Recenzent'),
+(4, 'Šéfredaktor'),
+(5, 'Administrátor');
 
-INSERT INTO users (userID, firstname, lastname, login, password, role) VALUES
-(1, 'Vojtěch', 'Kratochvíl', 'kratas', '$2y$10$Mr8Ru0nsIDllYlppDnm3z.sOCNJe394AJhNS7eylgdRZJDudwum9y', 1),
-(2, 'David', 'Malinha', 'cavemanspongebob', '$2y$10$ctaglWluI5M2lkqMflvJCOrfkQs4FSuZ.kb7yB8GFolb50N4viigO', 2),
-(3, 'Dominik', 'Dořák', 'gramer', '$2y$10$GVXpKdurW3xBUy5zNpYcK.lXB3//xLtQpkCbdb0TYdaPHHi1iWjde', 3),
-(4, 'Michal', 'Kuřák', 'darilin', '$2y$10$0dpDzJ6YsLS73EgS0xSDceXQg6Czj4z6A01oXpjvmQNZzKhuwOEt2', 4),
-(5, 'Rudolf', 'Doležal', 'rudys', '$2y$10$35DosTLOXnInebzEg0ZMRemljo7cQM0qR9ZOSQYLpD8JIjhRBAKyq', 5),
-(6, 'Jane', 'Smith', 'jane_smith', '$2y$10$aQ.XAQLtWYae4loR6CIolOieaVSTkBZfbs1eR2VfgGrwd5pifKBjS', 1),
-(7, 'Bob', 'Johnson', 'bob_johnson', '$2y$10$w/iUe4SIPTd5qlSqvXN4aergLb6py0uiwnr5SNVLsUBDApBVGxLuK', 1),
-(8, 'Alice', 'Johnson', 'alice_johnson', '$2y$10$t0cVOwgsj9ihTIwoiA85QubkybrdQF/RE/RsPOr9NDDTudW/sBwMC', 1),
-(9, 'Charlie', 'Brown', 'charlie_brown', '$2y$10$44M6mCjJ2Ob5Jp9er1MnYOHns4Av4URymxgGOjIX9wxysYMYjYw0.', 1);
+INSERT INTO users (firstname, lastname, login, password, role) VALUES
+('Vojtěch', 'Kratochvíl', 'autor', '$2y$10$3VKjih4Up.s0rRxcEfeyau2pfnFukUKqTkg9ZprL1Of6B7ceYOpdu', 1),
+('David', 'Malinha', 'redaktor', '$2y$10$9TdN60hsBJc5hMugn3ICjursWFpcYwRWaRboV.xUiv9W.y.O9gypS', 2),
+('Dominik', 'Dořák', 'recenzent', '$2y$10$tuq5pnJeZNoR6UDl5IIKquWiObnxdVgn8WiY9fUNKxxUNoyuMTRji', 3),
+('Michal', 'Kuřák', 'sefredaktor', '$2y$10$4ZHglYlb.xW2UXZJHsWjA.irlQmlwpODT9nRYSLeLL99zRNFEFebK', 4),
+('Rudolf', 'Doležal', 'administrator', '$2y$10$dzjqXvKRGvoqU8RxP/T0Le1pI3TN2PSgd3Yh.2OQQhWANOp/MUTHq', 5),
+('Jane', 'Smith', 'jane_smith', '$2y$10$aQ.XAQLtWYae4loR6CIolOieaVSTkBZfbs1eR2VfgGrwd5pifKBjS', 1),
+('Bob', 'Johnson', 'bob_johnson', '$2y$10$w/iUe4SIPTd5qlSqvXN4aergLb6py0uiwnr5SNVLsUBDApBVGxLuK', 1),
+('Alice', 'Johnson', 'alice_johnson', '$2y$10$t0cVOwgsj9ihTIwoiA85QubkybrdQF/RE/RsPOr9NDDTudW/sBwMC', 1),
+('Charlie', 'Brown', 'charlie_brown', '$2y$10$44M6mCjJ2Ob5Jp9er1MnYOHns4Av4URymxgGOjIX9wxysYMYjYw0.', 1);
 
-INSERT INTO articles (articleID, title, author, text, status) VALUES
-(1, 'Introduction to SQL', 1, 'This is a sample article about SQL.', 0),
-(2, 'Data Modeling Techniques', 7, 'Learn about various data modeling techniques.', 1),
-(3, 'Journalistic Writing Tips', 7, 'Improve your journalistic writing skills.', 0),
-(4, 'Database Security Best Practices', 8, 'Secure your databases with these practices.', 2),
-(5, 'Inženír Malinda', 8, 'This is a sample article about SQL.', 2),
-(6, 'David Malinda', 7, 'GImprove your journalistic writing skills.', 2),
-(7, 'David Liška', 1, 'Learn about various data modeling techniques.', 2);
+INSERT INTO articles (title, author, text, status) VALUES
+('Introduction to SQL', 1, 'This is a sample article about SQL.', 0),
+('Data Modeling Techniques', 7, 'Learn about various data modeling techniques.', 1),
+('Journalistic Writing Tips', 7, 'Improve your journalistic writing skills.', 0),
+('Database Security Best Practices', 8, 'Secure your databases with these practices.', 2),
+('Inženír Malinda', 8, 'This is a sample article about SQL.', 2),
+('David Malinda', 7, 'GImprove your journalistic writing skills.', 2),
+('David Liška', 1, 'Learn about various data modeling techniques.', 2);
 
 INSERT INTO validations (validationID, article, redactor) VALUES
 (1, 2, 2);
