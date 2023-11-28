@@ -55,7 +55,8 @@
         }
 
         $banner = NULL;
-        if($_FILES) {
+
+        if($_FILES && isset($_FILES['article-banner']['name']) && empty($_FILES['article-banner']['name']) == false) {
             $target_dir = __DIR__ . "/../../assets/banners/";
             $target_file = $target_dir . basename($_FILES["article-banner"]["name"]);
             $uploadOk = 1;
@@ -149,6 +150,13 @@
             exit();
         }
 
+        $articleID = Db::getLastId();
+
+        // Add Taggs for erticle
+        foreach($_POST["article-tags"] as $tag) {
+            Db::query("INSERT INTO article_tag (article, tag) VALUES(?,?)", $articleID, $tag);
+        }
+
         $responseText = array(
             "success" => true,
             "message" => "Článek byl úspěšně uložen",
@@ -178,15 +186,25 @@
 
         <label>
             <span>Tagy</span>
-            <select multiple="multiple" name="article-tags[]">
+
+            <div class="select-multiple" data-name="article-tags[]">
+                <div class="select-multiple-trigger">
+                    <div class="select-multiple-selected"></div>
+                    <p class="select-multiple-placeholder">Vyberte...</p>
+                </div>
+                <div class="select-multiple-options">
+
                 <?php
-                    foreach($tags as $tag) {
+                    foreach($tags as $key=>$tag) {
                         ?>
-                            <option value="<?php echo($tag["tagID"])?>"><?php echo($tag["name"])?></option>
+                            <div class="select-multiple-option" data-index="<?php echo($key); ?>" data-value="<?php echo($tag["tagID"])?>"><?php echo($tag["name"])?></div>
                         <?php
                     }
                 ?>
-            </select>
+
+                </div>
+                <div class="select-multiple-inputs"></div>
+            </div>
         </label>
 
         <label>
@@ -209,7 +227,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     tinymce.init({
-        selector: 'textarea',  // change this value according to your HTML
+        selector: 'textarea',
         deprecation_warnings: false
     });
 
