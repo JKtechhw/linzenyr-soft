@@ -13,6 +13,10 @@
             else if($_POST["action-page"] == "new-article") {
                 include("userPages/newArticle.php");
             }
+
+            else if($_POST["action-page"] == "article-author") {
+                include("userPages/redactorArticle.php");
+            }
         }
 
         else {
@@ -132,6 +136,10 @@
 
         else if($_GET["page"] == "article-detail") {
             include("userPages/article.php");
+        }
+
+        else if($_GET["page"] == "article-redactor") {
+            include("userPages/redactorArticle.php");
         }
 
         else {
