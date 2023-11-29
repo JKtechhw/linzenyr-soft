@@ -262,7 +262,7 @@ form {
             font-size: 1rem;
 
             &:hover {
-                backdrop-filter: brightness(0.8);
+                background-color: rgba($color-orange-light, 0.1);
             }
 
             &.selected-option {

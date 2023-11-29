@@ -96,5 +96,4 @@
         selector: 'textarea',
         deprecation_warnings: false
     });
-
 </script>

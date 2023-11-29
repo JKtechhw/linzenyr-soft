@@ -91,6 +91,7 @@
             $_SESSION["full_name"] = $user["full_name"];
             $_SESSION["login"] = $user["login"];
             $_SESSION["role_name"] = $user["role_name"];
+            $_SESSION["role"] = $user["role"];
     
             $responseText = array(
                 "success" => false,

@@ -1,4 +1,7 @@
 <?php 
+    // Author
+    if($_SESSION["role"] == 1) {
+
     $articles = Db::queryAll("SELECT * FROM articles WHERE author = ?", $_SESSION["user_id"]);
 ?>
 
@@ -46,3 +49,13 @@
         </tbody>
     </table>
 </div>
+
+<?php 
+    }
+
+    else if($_SESSION["role"] == 2) {
+?>
+
+<?php 
+    }
+?>
