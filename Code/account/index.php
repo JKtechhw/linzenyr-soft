@@ -128,6 +128,14 @@
         else if($_GET["page"] == "new-article") {
             include("userPages/newArticle.php");
         }
+
+        else if($_GET["page"] == "article-detail") {
+            include("userPages/article.php");
+        }
+
+        else {
+            echo("Stránka nenalezena");
+        }
     ?>
 
     </main>

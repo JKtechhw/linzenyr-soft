@@ -1,169 +1,35 @@
 <?php
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
+        exit();
+    }
 
-        if(isset($_POST["article-title"]) == false || empty($_POST["article-title"])) {
-            $responseText = array(
-                "success" => false,
-                "error-field" => "article-title",
-                "message" => "Vyplňte všechny povinné údaje"
-            );
+    if(isset($_GET["article"]) == false || is_numeric($_GET["article"]) == false) {
+        //TODO 
+        echo("Neplatné id článku");
+        exit();
+    }
 
-            http_response_code(400);
-            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    $articleData = Db::queryOne("
+        SELECT articles.*, GROUP_CONCAT(tags.tagID) AS tags
+        FROM articles 
+        RIGHT JOIN article_tag ON article_tag.article = articles.articleID
+        LEFT JOIN tags ON article_tag.tag = tags.tagID
+        WHERE articles.articleID = ?
+        GROUP BY articles.articleID, tags.tagID
+    ", $_GET["article"]);
 
-            exit();
-        }
+    print_r($articleData);
 
-        if($_POST["article-title"] != strip_tags($_POST["article-title"])) {
-            $responseText = array(
-                "success" => false,
-                "error-field" => "article-title",
-                "message" => "Název obsahuje zakázané znaky"
-            );
+    if(empty($articleData)) {
+        //TODO 
+        echo("Článek nebyl nalezen");
+        exit();
+    }
 
-            http_response_code(400);
-            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
-            exit();
-        }
-
-        if(isset($_POST["article-tags"]) == false || empty($_POST["article-title"])) {
-            $responseText = array(
-                "success" => false,
-                "error-field" => "article-tags",
-                "message" => "Vyplňte všechny povinné údaje"
-            );
-
-            http_response_code(400);
-            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
-            exit();
-        }
-
-        if(isset($_POST["article-text"]) == false || empty($_POST["article-text"])) {
-            $responseText = array(
-                "success" => false,
-                "error-field" => "article-text",
-                "message" => "Vyplňte všechny povinné údaje"
-            );
-
-            http_response_code(400);
-            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
-            exit();
-        }
-
-        $banner = NULL;
-
-        if($_FILES && isset($_FILES['article-banner']['name']) && empty($_FILES['article-banner']['name']) == false) {
-            $target_dir = __DIR__ . "/../../assets/banners/";
-            $target_file = $target_dir . basename($_FILES["article-banner"]["name"]);
-            $uploadOk = 1;
-            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-            if(isset($_POST["submit"])) {
-                $check = getimagesize($_FILES["article-banner"]["tmp_name"]);
-                if($check == false) {
-                    $responseText = array(
-                        "success" => false,
-                        "error-field" => "article-banner",
-                        "message" => "Neplatný soubor banneru"
-                    );
-        
-                    http_response_code(400);
-                    echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-                    exit();
-                }
-            }
-
-            if (file_exists($target_file)) {
-                $responseText = array(
-                    "success" => false,
-                    "error-field" => "article-banner",
-                    "message" => "Soubor s tímto názvem již existuje"
-                );
-    
-                http_response_code(400);
-                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-                exit();
-            }
-
-            if ($_FILES["article-banner"]["size"] > 1000000) {
-                $responseText = array(
-                    "success" => false,
-                    "error-field" => "article-banner",
-                    "message" => "Soubor je moc veliký"
-                );
-    
-                http_response_code(400);
-                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-                exit();
-            }
-
-            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-                $responseText = array(
-                    "success" => false,
-                    "error-field" => "article-banner",
-                    "message" => "Nepodporovaný formát bannmeru"
-                );
-    
-                http_response_code(400);
-                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-                exit();
-            }
-
-            if (move_uploaded_file($_FILES["article-banner"]["tmp_name"], $target_file)) {
-                $banner = $_FILES["article-banner"]["name"];
-            } 
-            
-            else {
-                $responseText = array(
-                    "success" => false,
-                    "error-field" => "article-banner",
-                    "message" => "Soubor se nepodařilo nahrát"
-                );
-    
-                http_response_code(500);
-                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-                exit();
-            }
-        }
-
-        try {
-            Db::query("
-                INSERT INTO articles (title, author, text, banner, status) 
-                VALUES (?,?,?,?,?)
-            ", $_POST["article-title"], $_SESSION["user_id"], $_POST["article-text"], $banner, 0);
-        }
-
-        catch(PDOException $e) {
-            $responseText = array(
-                "success" => false,
-                "message" => "Článek se nepodařilo přidat",
-                "error" => $e->getMessage()
-            );
-
-            http_response_code(500);
-            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
-            exit();
-        }
-
-        $articleID = Db::getLastId();
-
-        // Add Taggs for erticle
-        foreach($_POST["article-tags"] as $tag) {
-            Db::query("INSERT INTO article_tag (article, tag) VALUES(?,?)", $articleID, $tag);
-        }
-
-        $responseText = array(
-            "success" => true,
-            "message" => "Článek byl úspěšně uložen",
-        );
-
-        echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
+    if($_SESSION["user_id"] != $articleData["author"]) {
+        //TODO 
+        echo("K tomuto článku nemáte přístup");
         exit();
     }
 
@@ -171,7 +37,7 @@
 ?>
 
 <div id="content-header">
-    <h3>Nový článek</h3>
+    <h3><?php echo($articleData["title"]); ?></h3>
 </div>
 
 <div class="separator"></div>
@@ -180,7 +46,7 @@
     <form method="POST" action=".">
         <input type="hidden" name="action-page" value="new-article" />
         <label>
-            <input name="article-title" type="text" placeholder=" " />
+            <input name="article-title" type="text" placeholder=" " value="<?php echo($articleData["title"]); ?>"/>
             <span>Název článku</span>
         </label>
 
@@ -214,7 +80,7 @@
 
         <label>
             <span>Text</span>
-            <textarea name="article-text"></textarea>
+            <textarea name="article-text"><?php echo($articleData["text"]); ?></textarea>
         </label>
 
         <div class="buttons-row">

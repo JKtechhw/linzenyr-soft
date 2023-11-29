@@ -62,6 +62,10 @@
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
+            if(file_exists($target_dir) == false) {
+                mkdir($target_dir, 0777, true);
+            }
+
             if(isset($_POST["submit"])) {
                 $check = getimagesize($_FILES["article-banner"]["tmp_name"]);
                 if($check == false) {

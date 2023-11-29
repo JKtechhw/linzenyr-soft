@@ -6,6 +6,7 @@
         SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, users.login, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
         FROM articles
         INNER JOIN users ON articles.author = users.userID
+        WHERE status >= 3
         ORDER BY articleID DESC
     ");
 ?>
@@ -34,7 +35,7 @@
         ?>
         <div class="articles-box">
             <?php
-                if(count($tags) == 0) {
+                if(count($articles) == 0) {
             ?>
 
             <div class="box-message">

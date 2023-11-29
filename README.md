@@ -78,6 +78,6 @@ Pro každého uživatele je **heslo stejné jako login**, seznam uživatelů je 
 |---|---|---|
 | 0 | Rozepsáno | Článek je rozepsán autorem |
 | 1 | Schvalování | Článek je schvalován redaktory a recenzenti se k němu můžou vyjádřit, autor nemůže článek upravovat |
-| 2 | Schváleno / publikováno | Článek byl schválen a je publikován na webu, autor již nemůže článek upravovat |
-| 3 | Zamítnuto | Článek nebyl schválen a autor ho může upravit podle recenzí, nebo ho smazat |
+| 2 | Zamítnuto | Článek nebyl schválen a autor ho může upravit podle recenzí, nebo ho smazat |
+| 3 | Schváleno / publikováno | Článek byl schválen a je publikován na webu, autor již nemůže článek upravovat |
 | 4 | Vydáno | Článek byl publikován v některém vydání časopisu |

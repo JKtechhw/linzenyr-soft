@@ -37,7 +37,7 @@
                     </td>
 
                     <td>
-                        <a href="?page=article-detail&article=<?php echo($article["status"]); ?>">Detail</a>
+                        <a href="?page=article-detail&article=<?php echo($article["articleID"]); ?>">Detail</a>
                     </td>
                 </tr>
             <?php

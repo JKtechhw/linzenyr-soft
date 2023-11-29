@@ -58,9 +58,19 @@ forms.forEach(form => {
             body: FD
         });
 
-        const responseJson = await submitFetch.json();
+        const responseText = await submitFetch.text();
+        let responseJson;
+
+        try {
+            responseJson = JSON.parse(responseText)
+        }
+
+        catch(e) {
+            console.error(responseText);
+        }
 
         console.log(responseJson);
+
         if(submitFetch?.ok) {
             const successMessageElement = document.createElement("p");
             successMessageElement.classList.add("success-message");
