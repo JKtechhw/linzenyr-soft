@@ -14,7 +14,7 @@
                 include("userPages/newArticle.php");
             }
 
-            else if($_POST["action-page"] == "article-author") {
+            else if($_POST["action-page"] == "author-article") {
                 include("userPages/redactorArticle.php");
             }
 

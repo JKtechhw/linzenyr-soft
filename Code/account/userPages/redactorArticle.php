@@ -7,6 +7,156 @@
 
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
+        
+        if(isset($_POST["accept-article"]))
+        {
+            if($_SESSION["role"] != 2) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neoprávněný přístup."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if(is_numeric($_POST["accept-article"]) == false) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatné ID článku."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+            
+            $articleData = Db::queryOne("SELECT * FROM articles WHERE articleID = ?", $_POST["accept-article"]);
+            if(empty($articleData)) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Článek neexistuje."
+                );
+    
+                http_response_code(404);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if ($articleData["status"] != 1 && $articleData["status"] != 2) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatný stav článku."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            try {
+                Db::query("UPDATE articles SET status = 3 WHERE articleID = ?", $_POST["accept-article"]);
+                $responseText = array(
+                    "success" => true,
+                    "message" => "Článek byl úspěšně schválen."
+                );
+                echo json_encode($responseText, JSON_UNESCAPED_UNICODE);
+                exit();
+            }
+    
+            catch(PDOException $e) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Nepodařilo se upravit stav článku",
+                    "error" => $e->getMessage()
+                );
+    
+                http_response_code(500);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+        }
+
+        if(isset($_POST["reject-article"]))
+        {
+            if($_SESSION["role"] != 2) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neoprávněný přístup."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if(is_numeric($_POST["reject-article"]) == false) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatné ID článku."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+            
+            $articleData = Db::queryOne("SELECT * FROM articles WHERE articleID = ?", $_POST["reject-article"]);
+            if(empty($articleData)) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Článek neexistuje."
+                );
+    
+                http_response_code(404);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if ($articleData["status"] != 1) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatný stav článku."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            try {
+                Db::query("UPDATE articles SET status = 2 WHERE articleID = ?", $_POST["reject-article"]);
+                $responseText = array(
+                    "success" => true,
+                    "message" => "Článek byl zamítnut."
+                );
+                echo json_encode($responseText, JSON_UNESCAPED_UNICODE);
+                exit();
+            }
+    
+            catch(PDOException $e) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Nepodařilo se upravit stav článku",
+                    "error" => $e->getMessage()
+                );
+    
+                http_response_code(500);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+        }
         exit();
     }
 
@@ -31,7 +181,7 @@
         exit();
     }
 
-    if($articleData["status"] != 1 || $articleData["status"] != 3) {
+    if($articleData["status"] != 1 && $articleData["status"] != 3) {
         //TODO 
         echo("Nemáte přístup k tomuto článku.");
         exit();
