@@ -116,7 +116,7 @@
     if(isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
         $pathToSources = "../";
         include("../partials/header.php");
-        include("../partials/userHeader.php");
+        include("userPages/userHeader.php");
     ?>
 
     <main>

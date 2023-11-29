@@ -1,27 +1,22 @@
 <?php
-    if($_SESSION["role"] != 2) {
-        //TODO 
-        echo("K této stránce nemáte přístup.");
-        exit();
-    }
-
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
+
+        if($_SESSION["role"] != 2) {
+            $responseText = array(
+                "success" => false,
+                "message" => "Neoprávněný přístup."
+            );
+
+            http_response_code(403);
+            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+
+            exit();
+        }
+
         
         if(isset($_POST["accept-article"]))
         {
-            if($_SESSION["role"] != 2) {
-                $responseText = array(
-                    "success" => false,
-                    "message" => "Neoprávněný přístup."
-                );
-    
-                http_response_code(400);
-                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-    
-                exit();
-            }
-    
             if(is_numeric($_POST["accept-article"]) == false) {
                 $responseText = array(
                     "success" => false,
@@ -85,17 +80,6 @@
 
         if(isset($_POST["reject-article"]))
         {
-            if($_SESSION["role"] != 2) {
-                $responseText = array(
-                    "success" => false,
-                    "message" => "Neoprávněný přístup."
-                );
-    
-                http_response_code(400);
-                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-    
-                exit();
-            }
     
             if(is_numeric($_POST["reject-article"]) == false) {
                 $responseText = array(
@@ -157,6 +141,12 @@
                 exit();
             }
         }
+        exit();
+    }
+
+    if($_SESSION["role"] != 2) {
+        //TODO 
+        echo("K této stránce nemáte přístup.");
         exit();
     }
 

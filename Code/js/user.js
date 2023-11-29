@@ -127,7 +127,7 @@ forms.forEach(form => {
 
     if(form?.dataset?.waitOnChange && form.dataset.waitOnChange == "true") {
         const submitButton = document.querySelector("button[type=\"submit\"]");
-        submitButton.disabled = true;
+        submitButton != null ? submitButton.disabled = true : null;
         form.addEventListener("input", () => {
             submitButton.disabled = false;
         }, {once: true});

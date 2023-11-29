@@ -44,7 +44,8 @@
 
                             <td>
                                 <?php 
-                                    echo($article["status"]);
+                                    $statusText = array("Rozepsáno", "Schvalování", "Zamítnuto", "Schváleno", "Publikováno", "Vydáno");
+                                    echo($statusText[$article["status"]]);
                                 ?>
                             </td>
 

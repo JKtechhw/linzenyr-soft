@@ -2,6 +2,19 @@
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
 
+        if($_SESSION["role"] != 1) {
+            $responseText = array(
+                "success" => false,
+                "message" => "Neoprávněný přístup."
+            );
+
+            http_response_code(403);
+            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+
+            exit();
+        }
+
+        //Add article
         if(isset($_POST["article-title"]) == false || empty($_POST["article-title"])) {
             $responseText = array(
                 "success" => false,
@@ -168,6 +181,12 @@
 
         echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
 
+        exit();
+    }
+
+    if($_SESSION["role"] != 1) {
+        //TODO 
+        echo("K této stránce nemáte přístup.");
         exit();
     }
 

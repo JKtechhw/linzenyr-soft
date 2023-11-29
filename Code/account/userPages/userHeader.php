@@ -20,7 +20,7 @@
         exit();
     } 
 
-    require_once(__DIR__ . "/../src/dbConnect.php");
+    require_once(__DIR__ . "/../../src/dbConnect.php");
 
     if(isset($pathToSources) == false) {
         $pathToSources = "";
@@ -35,8 +35,12 @@
     }
 ?>
 <div id="user-nav" class="user-nav">
-    <div id="content-header">
-        <h3><i class="bi bi-arrow-left-short"></i>Účet</h3>
+    <div class="content-header">
+        <a href="?">
+            <h3>
+                <?php echo((isset($_GET["page"]) == false || $_GET["page"] == "articles") ? '' : '<i class="bi bi-arrow-left-short"></i>'); ?> Články
+            </h3>
+        </a>
     </div>
 
     <div class="separator"></div>
