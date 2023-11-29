@@ -14,44 +14,57 @@
         <a href="?page=new-article" class="theme-button">Přidat článek</a>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Název</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-                foreach($articles as $article) {
+    <?php 
+        if(count($articles) == 0) {
             ?>
-                <tr>
-                    <td>
-                        <?php 
-                            echo($article["title"]);
-                        ?>
-                    </td>
-
-                    <td>
-                        <?php 
-                            echo($article["status"]);
-                        ?>
-                    </td>
-
-                    <td>
-                        <a href="?page=article-detail&article=<?php echo($article["articleID"]); ?>">Detail</a>
-                    </td>
-                </tr>
+                <p>Nemáte žádný napsaný článek</p>
             <?php
-                }
+        }
+
+        else {
             ?>
-        </tbody>
-    </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        foreach($articles as $article) {
+                    ?>
+                        <tr>
+                            <td>
+                                <?php 
+                                    echo($article["title"]);
+                                ?>
+                            </td>
+
+                            <td>
+                                <?php 
+                                    echo($article["status"]);
+                                ?>
+                            </td>
+
+                            <td>
+                                <a href="?page=article-detail&article=<?php echo($article["articleID"]); ?>">Detail</a>
+                            </td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                </tbody>
+            </table>
+            <?php
+        }
+    ?>
 </div>
 
 <?php 
     }
+    // Redactor
 
     else if($_SESSION["role"] == 2) {
         $articles = Db::queryAll("SELECT * FROM articles WHERE status = 1 OR status = 3");

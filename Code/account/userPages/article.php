@@ -1,6 +1,33 @@
 <?php
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
+
+        if(isset($_POST["article-id"]) && is_numeric($_POST["article-id"]) == false) {
+            $responseText = array(
+                "success" => false,
+                "error-field" => "article-id",
+                "message" => "Neplatný požadavek"
+            );
+
+            http_response_code(400);
+            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+
+            exit();
+        }
+
+        if(isset($_POST["article-title"]) || empty($_POST["article-title"])) {
+            $responseText = array(
+                "success" => false,
+                "error-field" => "article-title",
+                "message" => "Vyplňte všechny povinné údaje"
+            );
+
+            http_response_code(400);
+            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+
+            exit();
+        }
+
         exit();
     }
 
@@ -16,23 +43,23 @@
         RIGHT JOIN article_tag ON article_tag.article = articles.articleID
         LEFT JOIN tags ON article_tag.tag = tags.tagID
         WHERE articles.articleID = ?
-        GROUP BY articles.articleID, tags.tagID
+        GROUP BY articles.articleID
     ", $_GET["article"]);
 
-    print_r($articleData);
-
+    
     if(empty($articleData)) {
         //TODO 
         echo("Článek nebyl nalezen");
         exit();
     }
-
+    
     if($_SESSION["user_id"] != $articleData["author"]) {
         //TODO 
         echo("K tomuto článku nemáte přístup");
         exit();
     }
-
+    
+    $selectedTags = explode(',', $articleData["tags"]);
     $tags = Db::queryAll("SELECT * FROM tags");
 ?>
 
@@ -43,8 +70,9 @@
 <div class="separator"></div>
 
 <div id="page-content" class="add-article">
-    <form method="POST" action=".">
-        <input type="hidden" name="action-page" value="new-article" />
+    <form method="POST" action="." data-wait-on-change="true">
+        <input type="hidden" name="action-page" value="edit-article" />
+        <input type="hidden" name="article-id" value="<?php echo($articleData["articleID"]); ?>" />
         <label>
             <input name="article-title" type="text" placeholder=" " value="<?php echo($articleData["title"]); ?>"/>
             <span>Název článku</span>
@@ -63,7 +91,7 @@
                 <?php
                     foreach($tags as $key=>$tag) {
                         ?>
-                            <div class="select-multiple-option" data-index="<?php echo($key); ?>" data-value="<?php echo($tag["tagID"])?>"><?php echo($tag["name"])?></div>
+                            <div class="select-multiple-option" data-selected="<?php echo(in_array($tag["tagID"], $selectedTags) ? "true" : "false")?>" data-index="<?php echo($key); ?>" data-value="<?php echo($tag["tagID"])?>"><?php echo($tag["name"])?></div>
                         <?php
                     }
                 ?>
@@ -94,6 +122,12 @@
 <script>
     tinymce.init({
         selector: 'textarea',
-        deprecation_warnings: false
+        deprecation_warnings: false,
+        setup: (editor) => {
+            editor.on("KeyPress", () => {
+                const form = document.querySelector(".add-article form");
+                form.dispatchEvent(new Event("input"));
+            });
+        }
     });
 </script>

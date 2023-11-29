@@ -59,6 +59,9 @@ forms.forEach(form => {
         });
 
         const responseText = await submitFetch.text();
+
+        console.log(responseText);
+
         let responseJson;
 
         try {
@@ -121,6 +124,14 @@ forms.forEach(form => {
             }
         }
     });
+
+    if(form?.dataset?.waitOnChange && form.dataset.waitOnChange == "true") {
+        const submitButton = document.querySelector("button[type=\"submit\"]");
+        submitButton.disabled = true;
+        form.addEventListener("input", () => {
+            submitButton.disabled = false;
+        }, {once: true});
+    }
 });
 
 const selectMultipleElements = document.querySelectorAll(".select-multiple");
@@ -211,5 +222,11 @@ selectMultipleElements.forEach(selectBox => {
 
             updateInputs();
         });
+
+        if(typeof optionElement?.dataset?.selected != "undefined") {
+            if(optionElement?.dataset?.selected == "true") {
+                optionElement.dispatchEvent(new Event("click"));
+            }
+        }
     }
 });

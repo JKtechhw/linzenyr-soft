@@ -14,7 +14,7 @@ Jedná se o školní projekt do předmětu *Řízení softwarových projektů*. 
 **Užitečné odkazy:**
 
 - :writing_hand: [RSP Moodle](https://moodle.vspj.cz/course/view.php?id=202744)
-- [Návrh designu](https://www.figma.com/file/zaNmvRBlpfe8Af4A5bMcQs/Untitled?type=design&node-id=0%3A1&mode=design&t=9MpZWB0Z3ptzWzxI-1)
+- :camera_flash: [Návrh designu](https://www.figma.com/file/zaNmvRBlpfe8Af4A5bMcQs/Untitled?type=design&node-id=0%3A1&mode=design&t=9MpZWB0Z3ptzWzxI-1)
 
 
 ## Instalace
