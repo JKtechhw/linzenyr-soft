@@ -222,10 +222,12 @@
     }
 
     $articleData = Db::queryOne("
-        SELECT articles.*, GROUP_CONCAT(tags.tagID) AS tags
+        SELECT articles.*, GROUP_CONCAT(tags.name) AS tagsName, GROUP_CONCAT(reviews.text SEPARATOR '---') AS reviews
         FROM articles 
         RIGHT JOIN article_tag ON article_tag.article = articles.articleID
         LEFT JOIN tags ON article_tag.tag = tags.tagID
+        RIGHT JOIN validations ON articles.articleID = validations.article
+        LEFT JOIN reviews ON validations.validationID = reviews.validation
         WHERE articles.articleID = ?
         GROUP BY articles.articleID, tags.tagID
     ", $_GET["article"]);
@@ -241,6 +243,9 @@
         echo("Nemáte přístup k tomuto článku.");
         exit();
     }
+
+    $selectedTagsName = explode(',', $articleData["tagsName"]);
+    $selectedReviews = explode('---', $articleData["reviews"]);
 ?>
 
 <div id="content-header">
@@ -248,18 +253,28 @@
 </div>
 
 <div id="page-content">
+    <div class="article-box">
+        <div class="article-tags">
+            <?php 
+                foreach($selectedTagsName as $tag) {
+                    ?>
+                        <span><?php echo($tag); ?></span>
+                    <?php
+                }
+            ?>
+        </div>
 
-    <?php
-        if(isset($articleData["banner"])){
-    ?>
+        <?php 
+            if(isset($articleData["banner"])) {
+                ?>
+                    <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" class="article-banner">
+                <?php
+            }
+        ?>
 
-    <img src="/assets/banners/<?php echo $articleData["banner"]?>">
+        <?php echo($articleData["text"]); ?>
+    </div>
 
-    <?php
-        }
-    ?>
-
-    <div class="article-text"><?php echo($articleData["text"]); ?></div>
     <div class="buttons-row">
         <?php
             if($articleData["status"] == 3) {
@@ -276,6 +291,20 @@
         
             else {
         ?>
+
+        <div class="reviews-box">
+            <?php
+                foreach($selectedReviews as $review) {
+            ?>
+
+            <div class="review">
+                <?php echo($review); ?>
+            </div>
+            
+            <?php
+                }
+            ?>
+        </div>
 
         <form action="." method="POST">
             <input type="hidden" name="action-page" value="author-article" />
