@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo($pathToSources); ?>css/style.css" />
     <link rel="icon" type="image/png" href="<?php echo($pathToSources); ?>assets/Images/logo-short.png" />
     <script src="<?php echo($pathToSources); ?>js/index.js" defer></script>
+    <script src="<?php echo($pathToSources); ?>js/readmore.js" defer> </script>
 </head>
 <body>
     <div id="content-container">

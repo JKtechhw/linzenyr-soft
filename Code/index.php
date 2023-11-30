@@ -70,10 +70,26 @@
                         ?>
 
                         <h1 class="article-title"><?php echo($article["title"]); ?></h1>
-                        <p class="article-text">
-                            <?php echo($article["text"]); ?>
-                        </p>
-                    </div>
+                        <div class="short-article-text">
+                            <p class="article-text">
+                            <?php
+                            // Limitujem clanok na 300 charakterov, pre skratene zobrazenie
+                            $articleText = $article["text"];
+                            $excerpt = strlen($articleText) > 300 ? substr($articleText, 0, 300) . "..." : $articleText;
+
+                            
+                            echo($excerpt);
+                            ?>
+                            
+                            </p>
+                                </div>
+                            <div class="full-article-text" style="display: none;">
+                                <?php echo($articleText); ?>
+                            </div>
+                            <a href="#" class="read-more" data-article-id="<?php echo($article["articleID"]); ?>">Read More</a>
+
+
+                        </div>
             <?php 
                     }
                 }
