@@ -187,12 +187,96 @@
                 exit();
             }
 
+            $banner = $articleToEdit["banner"];
+
+            if($_FILES && isset($_FILES['article-banner']['name']) && empty($_FILES['article-banner']['name']) == false) {
+                $target_dir = __DIR__ . "/../../assets/banners/";
+                $target_file = $target_dir . basename($_FILES["article-banner"]["name"]);
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+    
+                if(file_exists($target_dir) == false) {
+                    mkdir($target_dir, 0777, true);
+                }
+    
+                if(isset($_POST["submit"])) {
+                    $check = getimagesize($_FILES["article-banner"]["tmp_name"]);
+                    if($check == false) {
+                        $responseText = array(
+                            "success" => false,
+                            "error-field" => "article-banner",
+                            "message" => "Neplatný soubor banneru"
+                        );
+            
+                        http_response_code(400);
+                        echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                        exit();
+                    }
+                }
+    
+                if (file_exists($target_file)) {
+                    $responseText = array(
+                        "success" => false,
+                        "error-field" => "article-banner",
+                        "message" => "Soubor s tímto názvem již existuje"
+                    );
+        
+                    http_response_code(400);
+                    echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                    exit();
+                }
+    
+                if ($_FILES["article-banner"]["size"] > 1000000) {
+                    $responseText = array(
+                        "success" => false,
+                        "error-field" => "article-banner",
+                        "message" => "Soubor je moc veliký"
+                    );
+        
+                    http_response_code(400);
+                    echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                    exit();
+                }
+    
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+                    $responseText = array(
+                        "success" => false,
+                        "error-field" => "article-banner",
+                        "message" => "Nepodporovaný formát banneru"
+                    );
+        
+                    http_response_code(400);
+                    echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                    exit();
+                }
+
+                if(file_exists($target_dir . $articleToEdit["banner"])) {
+                    unlink($target_dir . $articleToEdit["banner"]);
+                }
+    
+                if (move_uploaded_file($_FILES["article-banner"]["tmp_name"], $target_file)) {
+                    $banner = $_FILES["article-banner"]["name"];
+                } 
+                
+                else {
+                    $responseText = array(
+                        "success" => false,
+                        "error-field" => "article-banner",
+                        "message" => "Soubor se nepodařilo nahrát"
+                    );
+        
+                    http_response_code(500);
+                    echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                    exit();
+                }
+            }
+
             try {
                 Db::query("
                     UPDATE articles
-                    SET title = ?, text = ?
+                    SET title = ?, text = ?, banner = ?
                     WHERE articleID = ?
-                ", $_POST["article-title"], $_POST["article-text"], $_POST["article-id"]);
+                ", $_POST["article-title"], $_POST["article-text"], $banner, $_POST["article-id"]);
             }
     
             catch(PDOException $e) {
@@ -303,7 +387,7 @@
 ?>
 
 <div id="page-content" class="add-article">
-    <form method="POST" action="." class="fullwidth-form">
+    <form method="POST" action="." class="fullwidth-form" data-reload-onsuccess="true">
         <input type="hidden" name="action-page" value="edit-article" />
         <input type="hidden" name="article-id" value="<?php echo($articleData["articleID"]); ?>" />
         <label>
@@ -333,6 +417,10 @@
                 <div class="select-multiple-inputs"></div>
             </div>
         </label>
+
+        <div class="banner-box">
+            <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" />
+        </div>
 
         <label>
             <span>Banner</span>

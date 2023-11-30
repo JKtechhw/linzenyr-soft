@@ -122,7 +122,7 @@
                 $responseText = array(
                     "success" => false,
                     "error-field" => "article-banner",
-                    "message" => "Nepodporovaný formát bannmeru"
+                    "message" => "Nepodporovaný formát banneru"
                 );
     
                 http_response_code(400);

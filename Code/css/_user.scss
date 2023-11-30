@@ -183,6 +183,16 @@ form {
     width: 100%;
 }
 
+.banner-box {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    img {
+        max-width: 100%;
+    }
+}
+
 .select-multiple {
     position: relative;
 
