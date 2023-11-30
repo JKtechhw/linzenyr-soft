@@ -120,6 +120,7 @@
     
             try {
                 Db::query("UPDATE articles SET status = 2 WHERE articleID = ?", $_POST["reject-article"]);
+                Db::query("UPDATE validations SET redactor = ? WHERE article = ? AND redactor IS NULL", $_SESSION["user_id"], $_POST["reject-article"]);
                 $responseText = array(
                     "success" => true,
                     "message" => "Článek byl zamítnut."
@@ -183,7 +184,8 @@
             }
     
             try {
-                Db::query("UPDATE articles SET status = 4  WHERE articleID = ?", $_POST["publish-article"]);
+                Db::query("UPDATE articles SET status = 4 WHERE articleID = ?", $_POST["publish-article"]);
+                Db::query("UPDATE validations SET redactor = ? WHERE article = ? AND redactor IS NULL", $_SESSION["user_id"], $_POST["publish-article"]);
                 $responseText = array(
                     "success" => true,
                     "message" => "Článek byl úspěsně publikován."
@@ -245,7 +247,7 @@
     }
 
     $selectedTagsName = explode(',', $articleData["tagsName"]);
-    $selectedReviews = explode('---', $articleData["reviews"]);
+    $selectedReviews = explode('---', (string)$articleData["reviews"]);
 ?>
 
 <div id="content-header">
