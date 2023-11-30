@@ -1,0 +1,70 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#about-logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+}
+
+#about-logo img {
+    width: 150px;
+}
+
+#about-text {
+    text-align: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+#about-text h1 {
+    font-size: 2.5rem;
+    color: #6d6d6d;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+#about-text h1::after {
+    content: '';
+    display: block;
+    width: 70%;
+    height: 3px;
+    background-color: #f60;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+}
+
+#about-text p {
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+
+
+#about-logo-background img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    opacity: 0.1;
+    max-width: 100%;
+
+}
