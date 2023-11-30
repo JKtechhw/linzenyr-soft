@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (fullArticleText.style.display === "none" || fullArticleText.style.display === "") {
                 fullArticleText.style.display = "block";
                 shortArticleText.style.display = "none";
-                this.textContent = "Collapse";
+                this.textContent = "Minimalizovat";
             } else {
                 fullArticleText.style.display = "none";
                 shortArticleText.style.display = "block"
-                this.textContent = "Read More";
+                this.textContent = "Rozbalit Článek";
             }
         });
     });
