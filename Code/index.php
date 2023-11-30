@@ -2,13 +2,28 @@
     include("partials/header.php");
 
     $tags = Db::queryAll("SELECT * FROM tags");
-    $articles = Db::queryAll("
-        SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, users.login, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
-        FROM articles
-        INNER JOIN users ON articles.author = users.userID
-        WHERE status >= 3
-        ORDER BY articleID DESC
-    ");
+
+    if(isset($_GET["tag"]) && empty($_GET["tag"]) == false) {
+        $articles = Db::queryAll("
+            SELECT articles.*, CONCAT(users.firstname, ' ', users.lastname) AS author, users.login, IF(users.avatar IS NULL, 'default.png', users.avatar) AS avatar
+            FROM articles
+            INNER JOIN users ON articles.author = users.userID
+            RIGHT JOIN article_tag ON article_tag.article = articles.articleID
+            LEFT JOIN tags ON tags.tagID = article_tag.tag
+            WHERE articles.status >= 4 AND tags.name = ?
+            ORDER BY articles.articleID DESC
+        ", urldecode($_GET["tag"]));
+    }
+
+    else {
+        $articles = Db::queryAll("
+            SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, users.login, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
+            FROM articles
+            INNER JOIN users ON articles.author = users.userID
+            WHERE status >= 4
+            ORDER BY articleID DESC
+        ");
+    }
 ?>
 
 <main>
@@ -25,7 +40,7 @@
                 <?php 
                     foreach($tags as $tag) {
                         ?>
-                            <button class="tag"><?php echo($tag["name"]); ?></button>
+                            <a href="?tag=<?php echo( urlencode($tag["name"])) ?>"class="tag"><?php echo($tag["name"]); ?></a>
                         <?php
                     }
                 ?>
@@ -76,6 +91,7 @@
                         <div class="article-link">
                             <a href="article-detail?article=<?php echo($article["articleID"]); ?>">Celý článek <i class="bi bi-arrow-right-short"></i></a>
                         </div>
+                    </div>
             <?php 
                     }
                 }

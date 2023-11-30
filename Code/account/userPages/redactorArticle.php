@@ -231,7 +231,7 @@
         RIGHT JOIN validations ON articles.articleID = validations.article
         LEFT JOIN reviews ON validations.validationID = reviews.validation
         WHERE articles.articleID = ? AND validations.redactor IS NULL
-        GROUP BY articles.articleID, tags.tagID
+        GROUP BY articles.articleID
     ", $_GET["article"]);
 
     if(empty($articleData)) {

@@ -15,7 +15,7 @@
         LEFT JOIN tags ON article_tag.tag = tags.tagID
         INNER JOIN users ON articles.author = users.userID
         WHERE articles.articleID = ?
-        GROUP BY articles.articleID, tags.tagID
+        GROUP BY articles.articleID
     ", $_GET["article"]);
 
     if(empty($articleData)) {

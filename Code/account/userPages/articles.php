@@ -2,7 +2,7 @@
     // Author
     if($_SESSION["role"] == 1) {
 
-    $articles = Db::queryAll("SELECT * FROM articles WHERE author = ?", $_SESSION["user_id"]);
+    $articles = Db::queryAll("SELECT * FROM articles WHERE author = ? ORDER BY articleID DESC", $_SESSION["user_id"]);
 ?>
 
 <div class="content-header">

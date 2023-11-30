@@ -385,111 +385,78 @@
 <?php
     if($articleData["status"] == 0 || $articleData["status"] == 2) {
 ?>
+    <div id="page-content" class="add-article">
+        <form method="POST" action="." class="fullwidth-form" data-reload-onsuccess="true">
+            <input type="hidden" name="action-page" value="edit-article" />
+            <input type="hidden" name="article-id" value="<?php echo($articleData["articleID"]); ?>" />
+            <label>
+                <input name="article-title" type="text" placeholder=" " value="<?php echo($articleData["title"]); ?>" />
+                <span>Název článku</span>
+            </label>
 
-<div id="page-content" class="add-article">
-    <form method="POST" action="." class="fullwidth-form" data-reload-onsuccess="true">
-        <input type="hidden" name="action-page" value="edit-article" />
-        <input type="hidden" name="article-id" value="<?php echo($articleData["articleID"]); ?>" />
-        <label>
-            <input name="article-title" type="text" placeholder=" " value="<?php echo($articleData["title"]); ?>" />
-            <span>Název článku</span>
-        </label>
+            <label>
+                <span>Tagy</span>
 
-        <label>
-            <span>Tagy</span>
+                <div class="select-multiple" data-name="article-tags[]" <?php echo($articleData["title"]); ?>" <?php echo(($articleData["status"] != 0 && $articleData["status"] != 2) ? "data-readonly=\"readonly\"" : "");?>>
+                    <div class="select-multiple-trigger">
+                        <div class="select-multiple-selected"></div>
+                        <p class="select-multiple-placeholder">Vyberte...</p>
+                    </div>
+                    <div class="select-multiple-options">
 
-            <div class="select-multiple" data-name="article-tags[]" <?php echo($articleData["title"]); ?>" <?php echo(($articleData["status"] != 0 && $articleData["status"] != 2) ? "data-readonly=\"readonly\"" : "");?>>
-                <div class="select-multiple-trigger">
-                    <div class="select-multiple-selected"></div>
-                    <p class="select-multiple-placeholder">Vyberte...</p>
+                    <?php
+                        foreach($tags as $key=>$tag) {
+                            ?>
+                                <div class="select-multiple-option" data-selected="<?php echo(in_array($tag["tagID"], $selectedTags) ? "true" : "false")?>" data-index="<?php echo($key); ?>" data-value="<?php echo($tag["tagID"])?>"><?php echo($tag["name"])?></div>
+                            <?php
+                        }
+                    ?>
+
+                    </div>
+                    <div class="select-multiple-inputs"></div>
                 </div>
-                <div class="select-multiple-options">
+            </label>
 
-                <?php
-                    foreach($tags as $key=>$tag) {
-                        ?>
-                            <div class="select-multiple-option" data-selected="<?php echo(in_array($tag["tagID"], $selectedTags) ? "true" : "false")?>" data-index="<?php echo($key); ?>" data-value="<?php echo($tag["tagID"])?>"><?php echo($tag["name"])?></div>
-                        <?php
-                    }
-                ?>
-
-                </div>
-                <div class="select-multiple-inputs"></div>
-            </div>
-        </label>
-
-        <?php
-            if($articleData["banner"] != NULL) {
-        ?>
-            <div class="banner-box">
-                <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" />
-            </div>
-        <?php 
-            }
-        ?>
-
-        <label>
-            <span>Banner</span>
-            <input name="article-banner" type="file" />
-        </label>
-
-        <label>
-            <span>Text</span>
-            <textarea name="article-text"><?php echo($articleData["text"]); ?></textarea>
-        </label>
-
-        <div class="buttons-row">
-            <button type="submit" class="theme-button">Uložit</button>
-        </div>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script>
-            tinymce.init({
-                selector: 'textarea',
-                deprecation_warnings: false,
-                setup: (editor) => {
-                    editor.on("KeyPress", () => {
-                        const form = document.querySelector(".add-article form");
-                        form.dispatchEvent(new Event("input"));
-                    });
-                }
-            });
-        </script>
-    </form>
-
-    <?php 
-    if($articleData["status"] == 2)
-        $reviews = Db::queryAll("
-            SELECT DISTINCT reviews.text
-            FROM validations
-            LEFT JOIN reviews ON reviews.validation = (
-                SELECT validationID
-                FROM validations
-                WHERE article = ?
-                ORDER BY validationID DESC
-                LIMIT 1
-            )
-        ", $_GET["article"]);
-
-        if(empty($reviews) == false) {
-            ?>
-            <div class="separator"></div>
-            <div class="reviews-box">
-                <h2>Recenze: </h2>
-                <?php
-                    foreach($reviews as $review) {
-                ?>
-    
-                <div class="review">
-                    <p><?php echo($review["text"]); ?></p>
-                </div>
-                
-                <?php
-                    }
-                ?>
-            </div>
             <?php
-        }
+                if($articleData["banner"] != NULL) {
+            ?>
+                <div class="banner-box">
+                    <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" />
+                </div>
+            <?php 
+                }
+            ?>
+
+            <label>
+                <span>Banner</span>
+                <input name="article-banner" type="file" />
+            </label>
+
+            <label>
+                <span>Text</span>
+                <textarea name="article-text"><?php echo($articleData["text"]); ?></textarea>
+            </label>
+
+            <div class="buttons-row">
+                <button type="submit" class="theme-button">Uložit</button>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script>
+                tinymce.init({
+                    selector: 'textarea',
+                    deprecation_warnings: false,
+                    setup: (editor) => {
+                        editor.on("KeyPress", () => {
+                            const form = document.querySelector(".add-article form");
+                            form.dispatchEvent(new Event("input"));
+                        });
+                    }
+                });
+            </script>
+        </form>
+
+        <?php 
     }
 
 
@@ -518,9 +485,42 @@
 
             <?php echo($articleData["text"]); ?>
         </div>
-    </div>
-
     <?php 
         }
+
+        if($articleData["status"] >= 2) {
+            $reviews = Db::queryAll("
+                SELECT DISTINCT reviews.text
+                FROM validations
+                LEFT JOIN reviews ON reviews.validation = (
+                    SELECT validationID
+                    FROM validations
+                    WHERE article = ?
+                    ORDER BY validationID DESC
+                    LIMIT 1
+                )
+            ", $_GET["article"]);
+
+            if(empty($reviews) == false) {
+                ?>
+                <div class="separator"></div>
+                <div class="reviews-box">
+                    <h2>Recenze: </h2>
+                    <?php
+                        foreach($reviews as $review) {
+                    ?>
+        
+                    <div class="review">
+                        <p><?php echo($review["text"]); ?></p>
+                    </div>
+                    
+                    <?php
+                        }
+                    ?>
+                </div>
+                <?php
+            }
+        }
     ?>
+    </div>
 </div>
