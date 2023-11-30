@@ -54,7 +54,7 @@
                 </li>
 
                 <li>
-                    <a href="<?php echo($pathToSources); ?>">
+                <a href="<?php echo($pathToSources); ?>about/">
                         <i class="bi bi-info-circle"></i>
                         <span>O nás</span>
                     </a>
