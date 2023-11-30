@@ -86,7 +86,7 @@
                             <div class="full-article-text" style="display: none;">
                                 <?php echo($articleText); ?>
                             </div>
-                            <a href="#" class="read-more" data-article-id="<?php echo($article["articleID"]); ?>">Read More</a>
+                            <a href="#" class="read-more" data-article-id="<?php echo($article["articleID"]); ?>">Rozbalit Článek</a>
 
 
                         </div>
