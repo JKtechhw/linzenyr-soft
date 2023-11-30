@@ -151,11 +151,6 @@ form {
         }
     }
 
-    .buttons-row {
-        justify-content: flex-end;
-        display: flex;
-    }
-
     .error-message {
         background-color: #ff000014;
         box-sizing: border-box;
@@ -174,6 +169,17 @@ form {
 }
 
 .fullwidth-form {
+    width: 100%;
+}
+
+.buttons-row {
+    justify-content: flex-end;
+    display: flex;
+}
+
+.reviews-box {
+    box-sizing: border-box;
+    padding: 10px;
     width: 100%;
 }
 

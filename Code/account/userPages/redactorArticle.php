@@ -228,7 +228,7 @@
         LEFT JOIN tags ON article_tag.tag = tags.tagID
         RIGHT JOIN validations ON articles.articleID = validations.article
         LEFT JOIN reviews ON validations.validationID = reviews.validation
-        WHERE articles.articleID = ?
+        WHERE articles.articleID = ? AND validations.redactor IS NULL
         GROUP BY articles.articleID, tags.tagID
     ", $_GET["article"]);
 
@@ -275,30 +275,33 @@
         <?php echo($articleData["text"]); ?>
     </div>
 
-    <div class="buttons-row">
-        <?php
-            if($articleData["status"] == 3) {
-        ?>
+    <?php
+        if($articleData["status"] == 3) {
+    ?>
 
-        <form action="." method="POST">
-            <input type="hidden" name="action-page" value="author-article" />
-            <input type="hidden" name="publish-article" value="<?php echo($articleData["articleID"]); ?>" />
-            <button type="submit" class="theme-button">Publikovat</button>
-        </form>
+        <div class="buttons-row">
+            <form action="." method="POST">
+                <input type="hidden" name="action-page" value="author-article" />
+                <input type="hidden" name="publish-article" value="<?php echo($articleData["articleID"]); ?>" />
+                <button type="submit" class="theme-button">Publikovat</button>
+            </form>
+        </div>
 
-        <?php
-            }
+    <?php
+        }
         
-            else {
-        ?>
+        else {
+    ?>
 
+        <div class="separator"></div>
         <div class="reviews-box">
+            <h2>Recenze: </h2>
             <?php
                 foreach($selectedReviews as $review) {
             ?>
 
             <div class="review">
-                <?php echo($review); ?>
+                <p><?php echo($review); ?></p>
             </div>
             
             <?php
@@ -306,20 +309,21 @@
             ?>
         </div>
 
-        <form action="." method="POST">
-            <input type="hidden" name="action-page" value="author-article" />
-            <input type="hidden" name="accept-article" value="<?php echo($articleData["articleID"]); ?>" />
-            <button type="submit" class="theme-button">Schválit</button>
-        </form>
-        
-        <form action="." method="POST">
-            <input type="hidden" name="action-page" value="author-article" />
-            <input type="hidden" name="reject-article" value="<?php echo($articleData["articleID"]); ?>" />
-            <button type="submit" class="theme-button">Zamitnout</button>
-        </form>
+        <div class="buttons-row">
+            <form action="." method="POST">
+                <input type="hidden" name="action-page" value="author-article" />
+                <input type="hidden" name="reject-article" value="<?php echo($articleData["articleID"]); ?>" />
+                <button type="submit" class="theme-button">Zamitnout</button>
+            </form>
+
+            <form action="." method="POST">
+                <input type="hidden" name="action-page" value="author-article" />
+                <input type="hidden" name="accept-article" value="<?php echo($articleData["articleID"]); ?>" />
+                <button type="submit" class="theme-button">Schválit</button>
+            </form>
+        </div>
 
         <?php
             }
         ?>
-    </div>
 </div>

@@ -11,9 +11,6 @@
 </div>
 
 <div class="table-box">
-    <div class="table-box-header">
-    </div>
-
     <?php 
         if(count($articles) == 0) {
             ?>
@@ -75,6 +72,16 @@
 </div>
 
 <div class="table-box">
+    <?php 
+        if(count($articles) == 0) {
+            ?>
+                <p>Nemáte žádný článek ke schálení</p>
+            <?php
+        }
+
+        else {
+    ?>
+
     <table>
         <thead>
             <tr>
@@ -110,6 +117,9 @@
             ?>
         </tbody>
     </table>
+    <?php 
+        }
+    ?>
 </div>
 
 <?php 

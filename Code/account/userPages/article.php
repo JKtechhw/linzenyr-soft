@@ -105,33 +105,125 @@
             exit();
         }
 
+        //Edit article
 
+        if(isset($_POST["article-id"])) {
+            if(is_numeric($_POST["article-id"]) == false) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-id",
+                    "message" => "Neplatný požadavek"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
 
-        if(isset($_POST["article-id"]) && is_numeric($_POST["article-id"]) == false) {
+            $articleToEdit = Db::queryOne("SELECT * FROM articles WHERE articleID = ?", $_POST["article-id"]);
+            if(empty($articleToEdit)) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-id",
+                    "message" => "Článek se nepodařilo najít"
+                );
+    
+                http_response_code(404);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+
+            if($articleToEdit["author"] != $_SESSION["user_id"]) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-id",
+                    "message" => "Nemáte přístup k tomuto článku"
+                );
+    
+                http_response_code(401);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if(isset($_POST["article-title"]) == false || empty($_POST["article-title"])) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-title",
+                    "message" => "Vyplňte všechny povinné údaje"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if($_POST["article-title"] != strip_tags($_POST["article-title"])) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-title",
+                    "message" => "Název obsahuje zakázané znaky"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if(isset($_POST["article-tags"]) == false || empty($_POST["article-title"])) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-tags[]",
+                    "message" => "Vyplňte všechny povinné údaje"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+
+            try {
+                Db::query("
+                    UPDATE articles
+                    SET title = ?, text = ?
+                    WHERE articleID = ?
+                ", $_POST["article-title"], $_POST["article-text"], $_POST["article-id"]);
+            }
+    
+            catch(PDOException $e) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Článek se nepodařilo upravit",
+                    "error" => $e->getMessage()
+                );
+    
+                http_response_code(500);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+
+            Db::query("DELETE FROM article_tag WHERE article = ?", $_POST["article-id"]);
+
+            foreach($_POST["article-tags"] as $tag) {
+                Db::query("INSERT INTO article_tag (article, tag) VALUES(?,?)", $_POST["article-id"], $tag);
+            }
+    
             $responseText = array(
-                "success" => false,
-                "error-field" => "article-id",
-                "message" => "Neplatný požadavek"
+                "success" => true,
+                "message" => "Článek byl úspěšně uložen",
             );
-
-            http_response_code(400);
+    
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
+    
             exit();
         }
 
-        if(isset($_POST["article-title"]) || empty($_POST["article-title"])) {
-            $responseText = array(
-                "success" => false,
-                "error-field" => "article-title",
-                "message" => "Vyplňte všechny povinné údaje"
-            );
-
-            http_response_code(400);
-            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
-
-            exit();
-        }
 
         exit();
     }
@@ -211,7 +303,7 @@
 ?>
 
 <div id="page-content" class="add-article">
-    <form method="POST" action="." data-wait-on-change="true" class="fullwidth-form">
+    <form method="POST" action="." class="fullwidth-form">
         <input type="hidden" name="action-page" value="edit-article" />
         <input type="hidden" name="article-id" value="<?php echo($articleData["articleID"]); ?>" />
         <label>
@@ -251,6 +343,11 @@
             <span>Text</span>
             <textarea name="article-text"><?php echo($articleData["text"]); ?></textarea>
         </label>
+
+        <div class="buttons-row">
+            <button type="submit" class="theme-button">Uložit</button>
+        </div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             tinymce.init({
@@ -264,9 +361,43 @@
                 }
             });
         </script>
+    </form>
 
     <?php 
+    if($articleData["status"] == 2)
+        $reviews = Db::queryAll("
+            SELECT DISTINCT reviews.text
+            FROM validations
+            LEFT JOIN reviews ON reviews.validation = (
+                SELECT validationID
+                FROM validations
+                WHERE article = ?
+                ORDER BY validationID DESC
+                LIMIT 1
+            )
+        ", $_GET["article"]);
+
+        if(empty($reviews) == false) {
+            ?>
+            <div class="separator"></div>
+            <div class="reviews-box">
+                <h2>Recenze: </h2>
+                <?php
+                    foreach($reviews as $review) {
+                ?>
+    
+                <div class="review">
+                    <p><?php echo($review["text"]); ?></p>
+                </div>
+                
+                <?php
+                    }
+                ?>
+            </div>
+            <?php
+        }
     }
+
 
     else {
     ?>
