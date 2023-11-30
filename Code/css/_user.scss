@@ -86,7 +86,6 @@
 form {
     box-sizing: border-box;
     padding: 10px;
-    width: 100%;
 
     label {
         position: relative;
@@ -172,6 +171,10 @@ form {
         padding: 10px;
         width: 100%;
     }
+}
+
+.fullwidth-form {
+    width: 100%;
 }
 
 .select-multiple {

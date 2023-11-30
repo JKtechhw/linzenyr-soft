@@ -7,11 +7,11 @@
 
 <div id="content-header">
     <h3>Vaše články</h3>
+    <a href="?page=new-article" class="theme-button">Přidat článek</a>
 </div>
 
 <div class="table-box">
     <div class="table-box-header">
-        <a href="?page=new-article" class="theme-button">Přidat článek</a>
     </div>
 
     <?php 

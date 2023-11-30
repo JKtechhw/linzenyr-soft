@@ -115,10 +115,33 @@ main {
     }
 }
 
+.article-box {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+
+    .article-banner {
+        width: 100%;
+    }
+
+    .article-tags {
+        display: flex;
+        margin: 5px 0;
+
+        span {
+            background-color: rgba($color-orange-light, 0.15);
+            border-radius: 100px;
+            padding: 5px 10px;
+            margin: 5px;
+        }
+    }
+}
+
 #content-header, .content-header {
     border-bottom: 2px solid $color-box-border;
     justify-content: space-between;
     background-color: #ffffff;
+    align-items: center;
     display: flex;
     width: 100%;
 

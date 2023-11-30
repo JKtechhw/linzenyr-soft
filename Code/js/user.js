@@ -75,6 +75,11 @@ forms.forEach(form => {
         console.log(responseJson);
 
         if(submitFetch?.ok) {
+            if(form?.dataset?.reloadOnsuccess && form.dataset.reloadOnsuccess == "true") {
+                window.location.reload();
+                return;
+            }
+
             const successMessageElement = document.createElement("p");
             successMessageElement.classList.add("success-message");
             successMessageElement.textContent = responseJson.message;
@@ -126,7 +131,7 @@ forms.forEach(form => {
     });
 
     if(form?.dataset?.waitOnChange && form.dataset.waitOnChange == "true") {
-        const submitButton = document.querySelector("button[type=\"submit\"]");
+        const submitButton = form.querySelector("button[type=\"submit\"]");
         submitButton != null ? submitButton.disabled = true : null;
         form.addEventListener("input", () => {
             submitButton.disabled = false;
