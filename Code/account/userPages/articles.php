@@ -5,7 +5,7 @@
     $articles = Db::queryAll("SELECT * FROM articles WHERE author = ?", $_SESSION["user_id"]);
 ?>
 
-<div id="content-header">
+<div class="content-header">
     <h3>Vaše články</h3>
     <a href="?page=new-article" class="theme-button">Přidat článek</a>
 </div>
