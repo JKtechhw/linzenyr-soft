@@ -25,7 +25,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O Nás</title>
-    <!-- <link rel="stylesheet" type="text/css" href="<?php echo($pathToSources); ?>css/style.css" /> -->
+    <link rel="icon" type="image/png" href="<?php echo($pathToSources); ?>assets/Images/logo-short.png" />
     <link rel="stylesheet" type="text/css" href="<?php echo($pathToSources); ?>css/about.css"" />
     
     </head>
@@ -33,7 +33,7 @@
 <div id="about-logo">
 
 <a href="<?php echo($pathToSources); ?>">
-<img src="<?php echo($pathToSources); ?>../Graphic/logo-full.png" alt="">
+<img src="<?php echo($pathToSources); ?>assets/Images/logo-full.png" alt="">
 </a>
     
 </div>
@@ -52,5 +52,5 @@ A každý má šanci, tak neváhejte a také se staňte součástí naší chlup
 </div>
 
 <div id="about-logo-background">
-    <img src="<?php echo($pathToSources); ?>../Graphic/logo-short.png" alt="">
+    <img src="<?php echo($pathToSources); ?>assets/Images/logo-short.png" alt="">
 </div>
