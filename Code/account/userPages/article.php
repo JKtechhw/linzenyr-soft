@@ -418,9 +418,15 @@
             </div>
         </label>
 
-        <div class="banner-box">
-            <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" />
-        </div>
+        <?php
+            if($articleData["banner"] != NULL) {
+        ?>
+            <div class="banner-box">
+                <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" />
+            </div>
+        <?php 
+            }
+        ?>
 
         <label>
             <span>Banner</span>
@@ -502,8 +508,8 @@
                 ?>
             </div>
 
-            <?php 
-                if(isset($articleData["banner"])) {
+            <?php
+                if($articleData["banner"] != NULL) {
                     ?>
                         <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" class="article-banner">
                     <?php

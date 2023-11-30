@@ -80,6 +80,11 @@ forms.forEach(form => {
                 return;
             }
 
+            if(typeof responseJson["redirect-page"] != "undefined") {
+                window.location.href = responseJson["redirect-page"];
+                return;
+            }
+
             const successMessageElement = document.createElement("p");
             successMessageElement.classList.add("success-message");
             successMessageElement.textContent = responseJson.message;

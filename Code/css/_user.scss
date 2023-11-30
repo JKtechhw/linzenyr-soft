@@ -79,7 +79,32 @@
     }
 
     table {
+        border-collapse: collapse;
+        table-layout: auto;
         width: 100%;
+
+        th {
+            text-align: left;
+        }
+
+        tr {
+            td, th {
+                border-bottom: 1px solid $color-box-border;
+                padding: 12px 0;
+            }
+
+            &:hover {
+                td {
+                    backdrop-filter: brightness(0.98);
+                }
+            }
+        }
+
+        a {
+            color: $color-orange-light;
+            text-decoration: none;
+            font-weight: 600;
+        }
     }
 }
 

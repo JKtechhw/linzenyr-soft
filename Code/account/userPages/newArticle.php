@@ -174,9 +174,16 @@
             Db::query("INSERT INTO article_tag (article, tag) VALUES(?,?)", $articleID, $tag);
         }
 
+        $url = $_SERVER['REQUEST_URI'];
+
+        // Remove query parameters if any
+        $parsed_url = parse_url($url);
+        $redirectUrl = $parsed_url['path'] . "?page=article-detail&article=" . $articleID;
+
         $responseText = array(
             "success" => true,
             "message" => "Článek byl úspěšně uložen",
+            "redirect-page" => $redirectUrl
         );
 
         echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
