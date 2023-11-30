@@ -141,7 +141,72 @@
                 exit();
             }
         }
+
+        if(isset($_POST["publish-article"]))
+        {
+    
+            if(is_numeric($_POST["publish-article"]) == false) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatné ID článku."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+            
+            $articleData = Db::queryOne("SELECT * FROM articles WHERE articleID = ?", $_POST["publish-article"]);
+            if(empty($articleData)) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Článek neexistuje."
+                );
+    
+                http_response_code(404);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            if ($articleData["status"] != 3) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatný stav článku."
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+    
+            try {
+                Db::query("UPDATE articles SET status = 4  WHERE articleID = ?", $_POST["publish-article"]);
+                $responseText = array(
+                    "success" => true,
+                    "message" => "Článek byl úspěsně publikován."
+                );
+                echo json_encode($responseText, JSON_UNESCAPED_UNICODE);
+                exit();
+            }
+    
+            catch(PDOException $e) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Nepodařilo se upravit stav článku",
+                    "error" => $e->getMessage()
+                );
+    
+                http_response_code(500);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+        }
         exit();
+        
     }
 
     if($_SESSION["role"] != 2) {
