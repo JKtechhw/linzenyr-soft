@@ -27,7 +27,7 @@ CREATE TABLE articles (
 CREATE TABLE validations (
     validationID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     article INT,
-    redactor INT,
+    redactor INT DEFAULT NULL,
     FOREIGN KEY (article) REFERENCES articles(articleID),
     FOREIGN KEY (redactor) REFERENCES users(userID)
 );

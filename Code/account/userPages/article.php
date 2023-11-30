@@ -80,6 +80,7 @@
 
             try {
                 Db::query("UPDATE articles SET status = 1 WHERE articleID = ?", $_POST["submit-article"]);
+                Db::query("INSERT INTO validations (article) VALUES (?)", $_POST["submit-article"]);
                 $responseText = array(
                     "success" => true,
                     "message" => "Článek byl odeslán k ověření"
@@ -148,7 +149,7 @@
     }
 
     $articleData = Db::queryOne("
-        SELECT articles.*, GROUP_CONCAT(tags.tagID) AS tags
+        SELECT articles.*, GROUP_CONCAT(tags.tagID) AS tags, GROUP_CONCAT(tags.name) AS tagsName
         FROM articles 
         RIGHT JOIN article_tag ON article_tag.article = articles.articleID
         LEFT JOIN tags ON article_tag.tag = tags.tagID
@@ -170,11 +171,24 @@
     }
     
     $selectedTags = explode(',', $articleData["tags"]);
+    $selectedTagsName = explode(',', $articleData["tagsName"]);
     $tags = Db::queryAll("SELECT * FROM tags");
 ?>
 
 <div id="content-header">
     <h3><?php echo($articleData["title"]); ?></h3>
+
+    <?php
+        if($articleData["status"] == 0 || $articleData["status"] == 2) {
+    ?>
+        <form method="POST" action="." data-reload-onsuccess="true">
+            <input type="hidden" name="action-page" value="edit-article" />
+            <input type="hidden" name="submit-article" value="<?php echo($articleData["articleID"]); ?>" />
+            <button type="submit" class="theme-button">Odeslat ke kontrole</button>
+        </form>
+    <?php 
+        }
+    ?>
 </div>
 
 <?php
@@ -191,12 +205,17 @@
 
 <div class="separator"></div>
 
+
+<?php
+    if($articleData["status"] == 0 || $articleData["status"] == 2) {
+?>
+
 <div id="page-content" class="add-article">
-    <form method="POST" action="." data-wait-on-change="true">
+    <form method="POST" action="." data-wait-on-change="true" class="fullwidth-form">
         <input type="hidden" name="action-page" value="edit-article" />
         <input type="hidden" name="article-id" value="<?php echo($articleData["articleID"]); ?>" />
         <label>
-            <input name="article-title" type="text" placeholder=" " value="<?php echo($articleData["title"]); ?>" <?php echo(($articleData["status"] != 0 && $articleData["status"] != 2) ? "readonly" : "");?> />
+            <input name="article-title" type="text" placeholder=" " value="<?php echo($articleData["title"]); ?>" />
             <span>Název článku</span>
         </label>
 
@@ -227,64 +246,56 @@
             <span>Banner</span>
             <input name="article-banner" type="file" />
         </label>
-        
-        <?php
-            if($articleData["status"] == 0 || $articleData["status"] == 2) {
-        ?>
 
         <label>
             <span>Text</span>
             <textarea name="article-text"><?php echo($articleData["text"]); ?></textarea>
         </label>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            tinymce.init({
+                selector: 'textarea',
+                deprecation_warnings: false,
+                setup: (editor) => {
+                    editor.on("KeyPress", () => {
+                        const form = document.querySelector(".add-article form");
+                        form.dispatchEvent(new Event("input"));
+                    });
+                }
+            });
+        </script>
 
-        <?php 
-            }
+    <?php 
+    }
 
-            else {
-        ?>
-        <span>Text</span>
-        <div class="article-box"><?php echo($articleData["text"]); ?></div>
-        <?php
-            }
-            
-            if($articleData["status"] == 0 || $articleData["status"] == 2) {
-        ?>
-            <div class="buttons-row">
-                <!-- <button type="button" class="theme-button">Odeslat ke kontrole</button> -->
-                <button type="submit" class="theme-button">Uložit</button>
-            </div>
-        <?php 
-            }
-        ?>
-    </form>
-
-    <?php
-        if($articleData["status"] == 0 || $articleData["status"] == 2) {
+    else {
     ?>
 
-    <div class="buttons-row">
-        <form method="POST" action=".">
-            <input type="hidden" name="action-page" value="edit-article" />
-            <input type="hidden" name="submit-article" value="<?php echo($articleData["articleID"]); ?>" />
-            <button type="submit" class="theme-button">Odeslat ke kontrole</button>
-        </form>
+    <div id="page-content">
+        <div class="article-box">
+            <div class="article-tags">
+                <?php 
+                    foreach($selectedTagsName as $tag) {
+                        ?>
+                            <span><?php echo($tag); ?></span>
+                        <?php
+                    }
+                ?>
+            </div>
+
+            <?php 
+                if(isset($articleData["banner"])) {
+                    ?>
+                        <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" class="article-banner">
+                    <?php
+                }
+            ?>
+
+            <?php echo($articleData["text"]); ?>
+        </div>
     </div>
 
     <?php 
         }
     ?>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    tinymce.init({
-        selector: 'textarea',
-        deprecation_warnings: false,
-        setup: (editor) => {
-            editor.on("KeyPress", () => {
-                const form = document.querySelector(".add-article form");
-                form.dispatchEvent(new Event("input"));
-            });
-        }
-    });
-</script>
