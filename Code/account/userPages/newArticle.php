@@ -79,6 +79,18 @@
                 mkdir($target_dir, 0777, true);
             }
 
+            if(is_writable($target_dir) == false) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "article-banner",
+                    "message" => "Banner nelze zapsat do adresáře"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                exit();
+            }
+
             if(isset($_POST["submit"])) {
                 $check = getimagesize($_FILES["article-banner"]["tmp_name"]);
                 if($check == false) {
