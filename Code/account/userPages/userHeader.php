@@ -1,4 +1,12 @@
 <?php 
+    $request_url = $_SERVER['REQUEST_URI'];
+
+    if (strpos($request_url, '.php') !== false && substr($request_url, -4) === '.php') {
+        http_response_code(403);
+        echo "Forbidden";
+        exit();
+    } 
+
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -12,13 +20,10 @@
         exit();
     }
 
-    $request_url = $_SERVER['REQUEST_URI'];
-
-    if (strpos($request_url, '.php') !== false && substr($request_url, -4) === '.php') {
-        http_response_code(403);
-        echo "Forbidden";
-        exit();
-    } 
+    if(isset($_GET["page"]) == true && $_GET["page"] == "helpdesk") {
+        include("helpdeskHeader.php");
+        return;
+    }
 
     require_once(__DIR__ . "/../../src/dbConnect.php");
 
@@ -35,12 +40,10 @@
     }
 ?>
 <div id="user-nav" class="user-nav">
-    <div class="content-header">
-        <a href="?">
-            <h3>
-                <?php echo((isset($_GET["page"]) == false || $_GET["page"] == "articles") ? '' : '<i class="bi bi-arrow-left-short"></i>'); ?> Články
-            </h3>
-        </a>
+    <div id="content-header">
+        <h3>
+            <?php echo((isset($_GET["page"]) == false || $_GET["page"] == "articles") ? '' : '<a href="?"><i class="bi bi-arrow-left"></i></a>'); ?> <?php echo($headerTitle); ?>
+        </h3>
     </div>
 
     <div class="separator"></div>

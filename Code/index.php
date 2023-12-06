@@ -1,9 +1,17 @@
 <?php 
     include("partials/header.php");
 
-    $tags = Db::queryAll("SELECT * FROM tags");
+    $tags = Db::queryAll("
+        SELECT tags.*
+        FROM tags
+        RIGHT JOIN article_tag ON article_tag.tag = tags.tagID
+        LEFT JOIN articles ON articles.articleID = article_tag.tag
+        GROUP BY tags.tagID
+        ORDER BY COUNT(articles.articleID)
+    ");
 
     if(isset($_GET["tag"]) && empty($_GET["tag"]) == false) {
+        $selectedTag = urldecode($_GET["tag"]);
         $articles = Db::queryAll("
             SELECT articles.*, CONCAT(users.firstname, ' ', users.lastname) AS author, users.login, IF(users.avatar IS NULL, 'default.png', users.avatar) AS avatar
             FROM articles
@@ -16,6 +24,7 @@
     }
 
     else {
+        $selectedTag = "all";
         $articles = Db::queryAll("
             SELECT articles.*, CONCAT(users.firstname, \" \", users.lastname) AS author, users.login, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
             FROM articles
@@ -27,7 +36,7 @@
 ?>
 
 <main>
-    <div id="content-header">
+    <div class="content-header">
         <h3>Články</h3>
     </div>
 
@@ -36,11 +45,11 @@
             if(count($tags) > 0) {
         ?>
             <div class="tags-row">
-                <button class="tag selected">Vše</button>
+                <a href="?" class="tag <?php echo($selectedTag == "all" ? "selected" : "");?>">Vše</a>
                 <?php 
                     foreach($tags as $tag) {
                         ?>
-                            <a href="?tag=<?php echo( urlencode($tag["name"])) ?>"class="tag"><?php echo($tag["name"]); ?></a>
+                            <a href="?tag=<?php echo( urlencode($tag["name"])) ?>"class="tag <?php echo($selectedTag == $tag["name"] ? "selected" : "");?>"><?php echo($tag["name"]); ?></a>
                         <?php
                     }
                 ?>

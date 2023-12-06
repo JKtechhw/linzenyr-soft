@@ -69,3 +69,22 @@ CREATE TABLE article_tag (
     FOREIGN KEY (article) REFERENCES articles(articleID),
     FOREIGN KEY (tag) REFERENCES tags(tagID)
 );
+
+CREATE TABLE helpdesk (
+    helpdeskID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    user INT,
+    solved INT DEFAULT NULL,
+    FOREIGN KEY (user) REFERENCES users(userID)
+);
+
+CREATE TABLE messages (
+    messageID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    date TIMESTAMP NOT NULL DEFAULT NOW(),
+    helpdesk INT,
+    author INT,
+    readed INT DEFAULT NULL,
+    message TEXT NOT NULL,
+    FOREIGN KEY (helpdesk) REFERENCES helpdesk(helpdeskID),
+    FOREIGN KEY (author) REFERENCES users(userID)
+);

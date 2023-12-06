@@ -1,4 +1,4 @@
-<div id="content-header">
+<div class="content-header">
     <h3>Profil</h3>
 </div>
 <p>Neimplementováno</p>

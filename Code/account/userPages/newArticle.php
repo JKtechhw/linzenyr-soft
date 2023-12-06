@@ -212,7 +212,7 @@
     $tags = Db::queryAll("SELECT * FROM tags");
 ?>
 
-<div id="content-header">
+<div class="content-header">
     <h3>Nový článek</h3>
 </div>
 
@@ -232,7 +232,17 @@
             <div class="select-multiple" data-name="article-tags[]">
                 <div class="select-multiple-trigger">
                     <div class="select-multiple-selected"></div>
-                    <p class="select-multiple-placeholder">Vyberte...</p>
+                    <p class="select-multiple-placeholder">
+                        <?php 
+                            if(count($tags) == 0) {
+                                echo("Prázdné");
+                            }
+
+                            else {
+                                echo("Vyberte...");
+                            }
+                        ?>
+                    </p>
                 </div>
                 <div class="select-multiple-options">
 

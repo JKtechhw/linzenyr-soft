@@ -250,7 +250,7 @@
     $selectedReviews = explode('---', (string)$articleData["reviews"]);
 ?>
 
-<div id="content-header">
+<div class="content-header">
     <h3><?php echo($articleData["title"]); ?></h3>
 </div>
 

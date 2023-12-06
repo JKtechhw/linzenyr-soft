@@ -1,4 +1,12 @@
 <?php 
+    $request_url = $_SERVER['REQUEST_URI'];
+
+    if (strpos($request_url, '.php') !== false && substr($request_url, -4) === '.php') {
+        http_response_code(403);
+        echo "Forbidden";
+        exit();
+    } 
+
     session_start();
 
     if($_POST) {
@@ -20,6 +28,10 @@
 
             else if($_POST["action-page"] == "edit-article") {
                 include("userPages/article.php");
+            }
+
+            else if($_POST["action-page"] == "helpdesk") {
+                include("userPages/helpdesk.php");
             }
         }
 
@@ -116,6 +128,31 @@
     if(isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
         $pathToSources = "../";
         include("../partials/header.php");
+
+        if(isset($_GET["page"]) == false || $_GET["page"] == "articles") {
+            $headerTitle = "Články";
+        }
+
+        else if($_GET["page"] == "helpdesk") {
+            $headerTitle = "Helpdesk";
+        }
+
+        else if($_GET["page"] == "profile") {
+            $headerTitle = "Profil";
+        }
+
+        else if($_GET["page"] == "new-article") {
+            $headerTitle = "Nový článek";
+        }
+
+        else if($_GET["page"] == "article-detail") {
+            $headerTitle = "Detail článku";
+        }
+
+        else if($_GET["page"] == "article-redactor") {
+            $headerTitle = "Detail článku";
+        }
+
         include("userPages/userHeader.php");
     ?>
 
@@ -147,6 +184,7 @@
         }
 
         else {
+            http_response_code(404);
             echo("Stránka nenalezena");
         }
     ?>

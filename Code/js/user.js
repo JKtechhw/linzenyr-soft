@@ -27,7 +27,13 @@ logoutElements.forEach(element => {
 });
 
 const forms = document.querySelectorAll("form");
-forms.forEach(form => {
+for(const form of forms) {
+    if(form?.dataset?.formEvents) {
+        if(form.dataset.formEvents == "none") {
+            continue;
+        } 
+    }
+
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -142,15 +148,19 @@ forms.forEach(form => {
             submitButton.disabled = false;
         }, {once: true});
     }
-});
+}
 
 const selectMultipleElements = document.querySelectorAll(".select-multiple");
-selectMultipleElements.forEach(selectBox => {
+for(const selectBox of selectMultipleElements) {
     const triggerBox = selectBox.querySelector(".select-multiple-trigger");
     const optionsBox = selectBox.querySelector(".select-multiple-options");
     const options = optionsBox.querySelectorAll(".select-multiple-option");
     const inputsBox = selectBox.querySelector(".select-multiple-inputs");
     const selectedBox = selectBox.querySelector(".select-multiple-selected");
+
+    if(options.length == 0) {
+        continue;
+    }
 
     function updateInputs() {
         while (inputsBox.firstChild) {
@@ -239,4 +249,4 @@ selectMultipleElements.forEach(selectBox => {
             }
         }
     }
-});
+}

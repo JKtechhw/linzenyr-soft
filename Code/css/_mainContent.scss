@@ -133,7 +133,7 @@ main {
 }
 
 .box-message {
-    color: $color-orange-light;
+    //color: $color-orange-light;
     text-align: center;
     margin-top: 20px;
     width: 100%;
@@ -193,8 +193,28 @@ main {
 }
 
 #content-header {
+    h3 {
+        vertical-align: middle;
+        display: inline-block;
+        position: relative;
+        padding-left: 40px;
+        margin-left: 10px;
+    }
+
     a {
+        transform: translateY(-50%);
+        box-sizing: border-box;
+        border-radius: 100%;
+        position: absolute;
         color: #000000;
+        padding: 7px;
+        left: 5px;
+        top: 50%;
+
+        &:hover {
+            background-color: $nav-hover-background;
+            color: $color-orange-light;
+        }
     }
 }
 
@@ -209,11 +229,6 @@ main {
     h3 {
         vertical-align: middle;
         display: inline-block;
-        margin-left: 10px;
-
-        .bi {
-            vertical-align: middle;
-            margin: 0 8px;
-        }
+        margin-left: 10px
     }
 }
