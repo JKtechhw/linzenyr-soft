@@ -10,6 +10,12 @@
     session_start();
 
     if($_POST) {
+        if(isset($_SESSION["logged"]) == false || $_SESSION["logged"] == false) {
+            http_response_code(403);
+            echo "Forbidden";
+            exit();
+        }
+
         require_once("../src/dbConnect.php");
         header('Content-Type: application/json; charset=utf-8');
 
@@ -33,6 +39,19 @@
             else if($_POST["action-page"] == "helpdesk") {
                 include("userPages/helpdesk.php");
             }
+
+            else {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatná hodnota action-page"
+                );
+        
+                http_response_code(403);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                exit();
+            }
+
+            exit();
         }
 
         else {
@@ -118,6 +137,28 @@
                 "message" => "Úspěšně jsme vás přihlásili"
             );
             
+            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+            exit();
+        }
+
+        exit();
+    }
+
+    if(isset($_GET["action-page"])) {
+        require_once("../src/dbConnect.php");
+        header('Content-Type: application/json; charset=utf-8');
+
+        if($_GET["action-page"] == "helpdesk") {
+            include("userPages/helpdesk.php");
+        }
+
+        else {
+            $responseText = array(
+                "success" => false,
+                "message" => "Neplatná hodnota action-page"
+            );
+    
+            http_response_code(403);
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
             exit();
         }

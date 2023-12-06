@@ -74,7 +74,7 @@
             if($targetHelpdesk["solved"] != NULL) {
                 $responseText = array(
                     "success" => false,
-                    "message" => "Helpdesk byl již uzavřen"
+                    "message" => "Helpdesk byl již uzavřen a nelze do něj přidávat zprávy"
                 );
         
                 http_response_code(403);
@@ -83,10 +83,24 @@
             }
 
             Db::query("INSERT INTO messages (helpdesk, author, message) VALUES (?,?,?)", $_POST["helpdesk"], $_SESSION["user_id"], $_POST["message-text"]);
+            $lastId = Db::getLastId();
+            $messageData = Db::queryOne("
+                SELECT messages.*, CONCAT(users.firstname, \" \", users.lastname) AS full_name, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
+                FROM messages 
+                INNER JOIN users ON users.userID = messages.author
+                WHERE messageID = ?
+            ", $lastId);
 
             $responseText = array(
                 "success" => true,
-                "message" => "Zpráva byla úspěšně odeslána"
+                "message" => "Zpráva byla úspěšně odeslána",
+                "message-data" => array(
+                    "message-text" => $messageData["message"],
+                    "message-date" => $messageData["date"],
+                    "message-author" => "author",
+                    "author-avatar" => "../assets/avatars/" . $messageData["avatar"],
+                    "author-name" => $messageData["full_name"],
+                )
             );
     
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
@@ -101,6 +115,25 @@
         http_response_code(400);
         echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
         exit();
+    }
+
+    if(isset($_GET["get-messages"])) {
+        $messages = Db::queryAll("
+            SELECT messages.message AS 'message-text', CONCAT(users.firstname, \" \", users.lastname) AS 'author-name', IF(users.avatar IS NULL,\"default.png\",users.avatar) AS 'author-avatar', messages.date AS 'message-date', messages.author AS 'message-author'
+            FROM messages 
+            INNER JOIN users ON messages.author = users.userID
+            WHERE helpdesk = ?
+            ORDER BY date
+        ", $_GET["id"]);
+
+        foreach($messages as &$message) {
+            $message["author-avatar"] = "../assets/avatars/" . $message["author-avatar"];
+            $message["message-author"] = ($message["message-author"] != $_SESSION["user_id"] ? "foreign" : "author");
+        }
+
+        echo(json_encode($messages, JSON_UNESCAPED_UNICODE));
+
+        return;
     }
 
     if(isset($_GET["id"]) == false || empty($_GET["id"])) {
@@ -146,13 +179,6 @@
         <?php
         return;
     }
-
-    $messages = Db::queryAll("
-        SELECT messages.*, CONCAT(users.firstname, \" \", users.lastname) AS full_name, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
-        FROM messages 
-        INNER JOIN users ON messages.author = users.userID
-        WHERE helpdesk = ?
-    ", $_GET["id"]);
 ?>
 
 <div class="content-header">
@@ -160,48 +186,7 @@
 </div>
 
 <div id="page-content">
-    <div id="messages-box">
-        <?php 
-            foreach($messages as $key => $message) {
-                $articleDate = new DateTime($message["date"]);
-                $articleDate->setTimezone(new DateTimeZone('Europe/Prague'));
-                ?>
-
-                    <div class="message-box <?php echo(($message["author"] != $_SESSION["user_id"]) ? "foreign-message" : "author-message" ); ?>">
-                        <div class="avatar-box">
-                            <img src="../assets/avatars/<?php echo($message["avatar"]); ?>">
-                        </div>
-                        <div class="message">
-                            <p class="message-text"><?php echo($message["message"]); ?></p>
-                            <p class="message-date">
-                                <?php 
-                                    echo($articleDate->format('H:i'));
-                                ?>
-                            </p>
-                        </div>
-                    </div>
-                <?php
-                    if(isset($messages[$key+1])) {
-                        $nextArticleDate = new DateTime($messages[$key+1]["date"]);
-                        $nextArticleDate->setTimezone(new DateTimeZone('Europe/Prague'));
-
-                        echo($articleDate->format("Y") . " - " . $nextArticleDate->format("Y") . " * "); 
-                        echo($articleDate->format("m") . " - " . $nextArticleDate->format("m") . " * ");
-                        echo($articleDate->format("d") . " - " . $nextArticleDate->format("d") . " * ");
-
-                        if(
-                            $articleDate->format("Y") != $nextArticleDate->format("Y") || 
-                            $articleDate->format("m") != $nextArticleDate->format("m") ||
-                            $articleDate->format("d") != $nextArticleDate->format("d")
-                        ) {
-                            ?>
-                                <div class="date-separator"><?php echo($articleDate->format('M j')); ?></div> 
-                            <?php
-                        }
-                    }
-            }
-        ?>
-    </div>
+    <div id="messages-box"></div>
 </div>
 
 <div id="message-form-box">
@@ -209,7 +194,7 @@
         <input type="hidden" name="helpdesk" value="<?php echo($_GET["id"]); ?>">
         <input type="hidden" name="action-page" value="helpdesk" />
 
-        <textarea name="message-text" placeholder="Zadejte zprávu..." oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+        <textarea name="message-text" placeholder="Zadejte zprávu..."></textarea>
 
         <div class="input-row">
             <span>
@@ -228,3 +213,10 @@
         </div>
     </form>
 </div>
+
+<script src="../js/helpdesk.js"></script>
+<script>
+    const messagesBox = document.querySelector("#messages-box");
+    const messageForm = document.querySelector("#message-form-box form");
+    new helpdesk(messagesBox, messageForm);
+</script>
