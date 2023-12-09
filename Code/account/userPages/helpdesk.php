@@ -131,7 +131,14 @@
             $message["message-author"] = ($message["message-author"] != $_SESSION["user_id"] ? "foreign" : "author");
         }
 
-        echo(json_encode($messages, JSON_UNESCAPED_UNICODE));
+
+        $responseData = array(
+            "messages" => $messages,
+            "hash" => hash("sha1", $messages),
+            "length" => count($messages)
+        );
+
+        echo(json_encode($responseData, JSON_UNESCAPED_UNICODE));
 
         return;
     }

@@ -10,16 +10,21 @@
     session_start();
 
     if($_POST) {
-        if(isset($_SESSION["logged"]) == false || $_SESSION["logged"] == false) {
-            http_response_code(403);
-            echo "Forbidden";
-            exit();
-        }
-
         require_once("../src/dbConnect.php");
         header('Content-Type: application/json; charset=utf-8');
 
         if(isset($_POST["action-page"])) {
+            if(isset($_SESSION["logged"]) == false || $_SESSION["logged"] == false) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Nejste přihlášeni"
+                );
+        
+                http_response_code(403);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                exit();
+            }
+
             if($_POST["action-page"] == "articles") {
                 include("userPages/articles.php");
             }
@@ -46,7 +51,7 @@
                     "message" => "Neplatná hodnota action-page"
                 );
         
-                http_response_code(403);
+                http_response_code(400);
                 echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
                 exit();
             }

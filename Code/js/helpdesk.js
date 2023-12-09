@@ -14,7 +14,8 @@ class helpdesk {
             e.preventDefault();
             e.stopPropagation();
 
-            console.log("Submit");
+            const submitButton = formElement.querySelector("button[type=\"submit\"]");
+            submitButton.disabled = true;
 
             const FD = new FormData(formElement);
 
@@ -43,7 +44,7 @@ class helpdesk {
                     const inputTextarea = formElement.querySelector("[name=\"message-text\"]");
                     inputTextarea.value = "";
                     inputTextarea.style.height = "";
-                    
+                    submitButton.disabled = false;
                 }
 
                 else {
@@ -62,6 +63,17 @@ class helpdesk {
         inputTextarea.addEventListener("input", () => {
             inputTextarea.style.height = "";
             inputTextarea.style.height = inputTextarea.scrollHeight + "px";
+        });
+
+        inputTextarea.addEventListener("keydown", (e) => {
+            if(e.key == "Enter") {
+                if(e.shiftKey) {
+                    return;
+                }
+                
+                e.preventDefault();
+                formElement.dispatchEvent(new Event("submit"));
+            }
         });
     }
 
@@ -121,7 +133,7 @@ class helpdesk {
 
         const messageTextElement = document.createElement("p");
         messageTextElement.classList.add("message-text");
-        messageTextElement.textContent = messageData["message-text"];
+        messageTextElement.innerHTML = messageData["message-text"].trim().replaceAll("\n", "<br />");
         messageElement.appendChild(messageTextElement);
 
         const messageDateElement = document.createElement("p");
