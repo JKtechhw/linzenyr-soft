@@ -22,18 +22,35 @@
 
     require_once(__DIR__ . "/../../src/dbConnect.php");
 
-    $reports = Db::queryAll("
-        SELECT h.*, messages.message
-        FROM helpdesk h
-        LEFT JOIN messages ON messages.helpdesk = (
-            SELECT messageID
-            FROM messages
-            WHERE messages.helpdesk = h.helpdeskID
-            ORDER BY messageID DESC
-            LIMIT 1
-        )
-        WHERE h.user = ?
-    ", $_SESSION["user_id"]);
+    if($_SESSION["role"] == 5) {
+        $reports = Db::queryAll("
+            SELECT h.*, messages.message
+            FROM helpdesk h
+            LEFT JOIN messages ON messages.helpdesk = (
+                SELECT messageID
+                FROM messages
+                WHERE messages.helpdesk = h.helpdeskID
+                ORDER BY messageID DESC
+                LIMIT 1
+            )
+        ");
+    }
+
+    else {
+        $reports = Db::queryAll("
+            SELECT h.*, messages.message
+            FROM helpdesk h
+            LEFT JOIN messages ON messages.helpdesk = (
+                SELECT messageID
+                FROM messages
+                WHERE messages.helpdesk = h.helpdeskID
+                ORDER BY messageID DESC
+                LIMIT 1
+            )
+            WHERE h.user = ?
+        ", $_SESSION["user_id"]);
+    }
+
 ?>
 <div id="user-nav" class="user-nav">
     <div id="content-header">

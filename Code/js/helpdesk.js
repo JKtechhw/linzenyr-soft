@@ -1,20 +1,38 @@
 'use strict';
 
 class helpdesk {
+    messagesHash;
     messagesElement;
 
     constructor(messagesElement, messagesFormElement) {
         this.messagesElement = messagesElement;
         this.setFormEvents(messagesFormElement);
-        this.fetchMessages();
+        this.startHelpdesk();
+    }
+    
+    async startHelpdesk() {
+        let messages;
+
+        try {
+            messages = await this.fetchMessages();
+        }
+
+        catch(e) {
+            //TODO Error message
+            return;
+        }
+        
+        this.messagesHash = messages.hash;
+        this.buildMessages(messages.messages);
+        setInterval(this.checkInterval.bind(this), 10000);
     }
 
     setFormEvents(formElement) {
+        const submitButton = formElement.querySelector("button[type=\"submit\"]");
+
         formElement.addEventListener("submit", async (e) => {
             e.preventDefault();
             e.stopPropagation();
-
-            const submitButton = formElement.querySelector("button[type=\"submit\"]");
             submitButton.disabled = true;
 
             const FD = new FormData(formElement);
@@ -45,6 +63,8 @@ class helpdesk {
                     inputTextarea.value = "";
                     inputTextarea.style.height = "";
                     submitButton.disabled = false;
+                    console.log("New hash: " + responseJson["new-hash"])
+                    this.messagesHash = responseJson["new-hash"];
                 }
 
                 else {
@@ -72,12 +92,37 @@ class helpdesk {
                 }
                 
                 e.preventDefault();
-                formElement.dispatchEvent(new Event("submit"));
+                //formElement.dispatchEvent(new Event("submit"));
+                submitButton.click();
+
             }
         });
     }
 
+    async checkInterval() {
+        let messages;
+        try {
+            messages = await this.fetchMessages();
+        }
+
+        catch(e) {
+            return;
+        }
+
+        if(messages.hash == this.messagesHash) {
+            console.log("Messages doesnt change");
+        }
+
+        else {
+            this.messagesHash = messages.hash;
+            console.warn("Need to rebuild messages");
+            console.log("New hash: " + messages.hash)
+            this.buildMessages(messages.messages);
+        }
+    }
+
     buildMessages(messagesData) {
+        this.messagesElement.textContent = "";
         let oldMessageDate = null;
         
         for(const message of messagesData) {
@@ -116,7 +161,7 @@ class helpdesk {
     buildMessage(messageData) {
         const messageBox = document.createElement("div");
         messageBox.classList.add("message-box");
-        messageBox.classList.add(messageData["message-author"] + "-message")
+        messageBox.classList.add(messageData["message-author"] + "-message");
 
         const avatarBox = document.createElement("div");
         avatarBox.classList.add("avatar-box")
@@ -178,15 +223,17 @@ class helpdesk {
 
             catch(e) {
                 console.error(responseText);
-                return;
+                throw new Error("Server returned unknown format");
             }
 
-            this.buildMessages(responseJson);
+            return responseJson;
         }
 
         else {
+
             //TODO Unable to send message
-            console.error("Unable to get a messages");
+            //console.error("Unable to get a messages");
+            throw new Error("Unable to get messages");
         }
     }
 

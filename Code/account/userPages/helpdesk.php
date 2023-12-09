@@ -60,7 +60,7 @@
                 exit();
             }
 
-            if($targetHelpdesk["user"] != $_SESSION["user_id"]) {
+            if($targetHelpdesk["user"] != $_SESSION["user_id"] && $_SESSION["role"] != 5) {
                 $responseText = array(
                     "success" => false,
                     "message" => "Nemáte oprávnění pro přidání zprávy do tohoto helpdesku"
@@ -91,6 +91,14 @@
                 WHERE messageID = ?
             ", $lastId);
 
+            $messages = Db::queryAll("
+                SELECT messages.message AS 'message-text', CONCAT(users.firstname, \" \", users.lastname) AS 'author-name', IF(users.avatar IS NULL,\"default.png\",users.avatar) AS 'author-avatar', messages.date AS 'message-date', messages.author AS 'message-author'
+                FROM messages 
+                INNER JOIN users ON messages.author = users.userID
+                WHERE helpdesk = ?
+                ORDER BY date
+            ", $_POST["helpdesk"]);
+
             $responseText = array(
                 "success" => true,
                 "message" => "Zpráva byla úspěšně odeslána",
@@ -100,7 +108,8 @@
                     "message-author" => "author",
                     "author-avatar" => "../assets/avatars/" . $messageData["avatar"],
                     "author-name" => $messageData["full_name"],
-                )
+                ),
+                "new-hash" => hash("sha1", json_encode($messages))
             );
     
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
@@ -126,15 +135,16 @@
             ORDER BY date
         ", $_GET["id"]);
 
+        $hash = hash("sha1", json_encode($messages));
+
         foreach($messages as &$message) {
             $message["author-avatar"] = "../assets/avatars/" . $message["author-avatar"];
             $message["message-author"] = ($message["message-author"] != $_SESSION["user_id"] ? "foreign" : "author");
         }
 
-
         $responseData = array(
             "messages" => $messages,
-            "hash" => hash("sha1", $messages),
+            "hash" => $hash,
             "length" => count($messages)
         );
 
@@ -173,7 +183,7 @@
         return;
     }
 
-    if($helpdesk["user"] != $_SESSION["user_id"]) {
+    if($helpdesk["user"] != $_SESSION["user_id"] && $_SESSION["role"] != 5) {
         ?>
         <div class="content-header">
             <h3>Helpdesk</h3>
