@@ -6,7 +6,10 @@ class helpdesk {
 
     constructor(messagesElement, messagesFormElement) {
         this.messagesElement = messagesElement;
-        this.setFormEvents(messagesFormElement);
+        console.log(messagesFormElement)
+        if(typeof messagesFormElement != "undefined" && messagesFormElement != null) {
+            this.setFormEvents(messagesFormElement);
+        }
         this.startHelpdesk();
     }
     
@@ -63,7 +66,7 @@ class helpdesk {
                     inputTextarea.value = "";
                     inputTextarea.style.height = "";
                     submitButton.disabled = false;
-                    console.log("New hash: " + responseJson["new-hash"])
+                    console.log("New hash: " + responseJson["new-hash"]);
                     this.messagesHash = responseJson["new-hash"];
                 }
 
@@ -96,6 +99,15 @@ class helpdesk {
                 submitButton.click();
 
             }
+        });
+
+        const sendImageMessage = formElement.querySelector("#upload-image-button");
+        sendImageMessage.addEventListener("click", () => {
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = "image/*";
+            formElement.appendChild(fileInput);
+            fileInput.click();
         });
     }
 

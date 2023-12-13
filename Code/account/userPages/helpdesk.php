@@ -10,8 +10,17 @@
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
 
-        if(isset($_POST["helpdesk"])) {
-            if(is_numeric($_POST["helpdesk"]) == false) {
+        if(isset($_POST["helpdesk"]) || isset($_POST["new-ticket"])) {
+            if(isset($_POST["new-ticket"])) {
+                Db::query("INSERT INTO helpdesk (title, user) VALUES (?,?)", "Test pridani", $_SESSION["user_id"]);
+                $helpdesk = Db::getLastId();
+            }
+
+            else if(is_numeric($_POST["helpdesk"])) {
+                $helpdesk = $_POST["helpdesk"];
+            }
+
+            else {
                 $responseText = array(
                     "success" => false,
                     "error-field" => "helpdesk",
@@ -47,7 +56,7 @@
                 exit();
             }
 
-            $targetHelpdesk = Db::queryOne("SELECT * FROM helpdesk WHERE helpdeskID = ?", $_POST["helpdesk"]);
+            $targetHelpdesk = Db::queryOne("SELECT * FROM helpdesk WHERE helpdeskID = ?", $helpdesk);
             if(empty($targetHelpdesk)) {
                 $responseText = array(
                     "success" => false,
@@ -82,7 +91,7 @@
                 exit();
             }
 
-            Db::query("INSERT INTO messages (helpdesk, author, message) VALUES (?,?,?)", $_POST["helpdesk"], $_SESSION["user_id"], $_POST["message-text"]);
+            Db::query("INSERT INTO messages (helpdesk, author, message) VALUES (?,?,?)", $helpdesk, $_SESSION["user_id"], $_POST["message-text"]);
             $lastId = Db::getLastId();
             $messageData = Db::queryOne("
                 SELECT messages.*, CONCAT(users.firstname, \" \", users.lastname) AS full_name, IF(users.avatar IS NULL,\"default.png\",users.avatar) AS avatar
@@ -97,20 +106,36 @@
                 INNER JOIN users ON messages.author = users.userID
                 WHERE helpdesk = ?
                 ORDER BY date
-            ", $_POST["helpdesk"]);
+            ", $helpdesk);
 
-            $responseText = array(
-                "success" => true,
-                "message" => "Zpráva byla úspěšně odeslána",
-                "message-data" => array(
-                    "message-text" => $messageData["message"],
-                    "message-date" => $messageData["date"],
-                    "message-author" => "author",
-                    "author-avatar" => "../assets/avatars/" . $messageData["avatar"],
-                    "author-name" => $messageData["full_name"],
-                ),
-                "new-hash" => hash("sha1", json_encode($messages))
-            );
+            if(isset($_POST["new-ticket"])) {
+                $url = $_SERVER['REQUEST_URI'];
+                $parsed_url = parse_url($url);
+                $redirectUrl = $parsed_url['path'] . "?page=helpdesk&id=" . $helpdesk;
+
+                $responseText = array(
+                    "success" => true,
+                    "message" => "Článek byl úspěšně uložen",
+                    "redirect-page" => $redirectUrl
+                );
+
+            }
+
+            else {
+                $responseText = array(
+                    "success" => true,
+                    "message" => "Zpráva byla úspěšně odeslána",
+                    "message-data" => array(
+                        "message-text" => $messageData["message"],
+                        "message-date" => $messageData["date"],
+                        "message-author" => "author",
+                        "author-avatar" => "../assets/avatars/" . $messageData["avatar"],
+                        "author-name" => $messageData["full_name"],
+                    ),
+                    "new-hash" => hash("sha1", json_encode($messages))
+                );
+            }
+
     
             echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
             exit();
@@ -150,6 +175,41 @@
 
         echo(json_encode($responseData, JSON_UNESCAPED_UNICODE));
 
+        return;
+    }
+
+    if(isset($_GET["new-ticket"])) {
+        ?>
+        <div class="content-header">
+            <h3>Nový ticket</h3>
+        </div>
+        <div id="page-content">
+            <div id="messages-box"></div>
+        </div>
+
+        <div id="message-form-box">
+            <form method="POST">
+                <input type="hidden" name="new-ticket" value="1">
+                <input type="hidden" name="action-page" value="helpdesk" />
+
+                <input type="text" name="ticket-name">
+
+                <textarea name="message-text" placeholder="Zadejte zprávu..."></textarea>
+
+                <div class="input-row">
+                    <span>
+                        <button type="button" class="icon-button" id="upload-image-button">
+                            <i class="bi bi-image"></i>
+                        </button>
+                    </span>
+
+                    <span>
+                        <button type="submit" class="theme-button">Odeslat</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <?php
         return;
     }
 
@@ -202,34 +262,52 @@
     <h3><?php echo($helpdesk["title"]); ?></h3>
 </div>
 
+<?php 
+    if($helpdesk["solved"] != NULL) {
+?>
+    <div class="info-panel warn">
+        <p>Ticket byl již uzavřen</p>
+    </div>
+<?php 
+    }
+?>
+
 <div id="page-content">
     <div id="messages-box"></div>
 </div>
 
-<div id="message-form-box">
-    <form method="POST" data-form-events="none">
-        <input type="hidden" name="helpdesk" value="<?php echo($_GET["id"]); ?>">
-        <input type="hidden" name="action-page" value="helpdesk" />
+<?php 
+    if($helpdesk["solved"] == NULL) {
+?>
 
-        <textarea name="message-text" placeholder="Zadejte zprávu..."></textarea>
+    <div id="message-form-box">
+        <form method="POST" data-form-events="none">
+            <input type="hidden" name="helpdesk" value="<?php echo($_GET["id"]); ?>">
+            <input type="hidden" name="action-page" value="helpdesk" />
 
-        <div class="input-row">
-            <span>
-                <button type="button" class="icon-button">
-                    <i class="bi bi-image"></i>
-                </button>
+            <textarea name="message-text" placeholder="Zadejte zprávu..."></textarea>
 
-                <button type="button" class="icon-button">
-                    <i class="bi bi-lock-fill"></i>
-                </button>
-            </span>
+            <div class="input-row">
+                <span>
+                    <button type="button" class="icon-button" id="upload-image-button">
+                        <i class="bi bi-image"></i>
+                    </button>
 
-            <span>
-                <button type="submit" class="theme-button">Odeslat</button>
-            </span>
-        </div>
-    </form>
-</div>
+                    <button type="button" class="icon-button" id="close-helpdesk-button">
+                        <i class="bi bi-lock-fill"></i>
+                    </button>
+                </span>
+
+                <span>
+                    <button type="submit" class="theme-button">Odeslat</button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+<?php 
+    }
+?>
 
 <script src="../js/helpdesk.js"></script>
 <script>

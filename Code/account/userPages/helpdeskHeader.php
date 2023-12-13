@@ -37,6 +37,24 @@
     }
 
     else {
+        // SELECT u.id,
+        //         u.name,
+        //         MIN(t.spent) AS spent
+        // FROM USERS u
+        // JOIN TRANSACTIONS t ON t.uid = u.id
+        // GROUP BY u.id, u.name
+
+        // SELECT h.*, messages.message
+        // FROM helpdesk h
+        // LEFT JOIN messages ON messages.helpdesk = (
+        //     SELECT messageID
+        //     FROM messages
+        //     WHERE messages.helpdesk = h.helpdeskID
+        //     ORDER BY messageID DESC
+        //     LIMIT 1
+        // )
+        // WHERE h.user = ?
+
         $reports = Db::queryAll("
             SELECT h.*, messages.message
             FROM helpdesk h
@@ -58,9 +76,15 @@
             <a href="?"><i class="bi bi-arrow-left"></i></a> Helpdesk
         </h3>
 
-        <h3>
-            <a href="#">+</a>
-        </h3>
+        <?php 
+            if($_SESSION["role"] != 5) {
+        ?>
+            <h3>
+                <a href="?page=helpdesk&new-ticket">+</a>
+            </h3>
+        <?php 
+            }
+        ?>
     </div>
     <div class="separator"></div>
     <ul class="user-nav-content">
@@ -76,7 +100,7 @@
             else {
                 foreach($reports as $report) {
                     ?>
-                        <li>
+                        <li <?php echo(isset($_GET["id"]) && $_GET["id"] == $report["helpdeskID"] ? "class=\"active\"" : ""); ?>>
                             <a href="?page=helpdesk&id=<?php echo($report["helpdeskID"]); ?>">
                                 <span><?php echo($report["title"]); ?></span>
                             </a>
