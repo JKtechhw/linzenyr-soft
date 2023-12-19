@@ -250,3 +250,41 @@ for(const selectBox of selectMultipleElements) {
         }
     }
 }
+
+const checkboxRoles = document.querySelectorAll("input[type=\"checkbox\"][data-role]");
+checkboxRoles.forEach(element => {
+    if(element.dataset.role == "select-all") {
+        const targetElement = document.querySelector(element.dataset.target);
+        const targetCheckboxes = targetElement.querySelectorAll("input[type=\"checkbox\"]");
+
+        element.addEventListener("click",() => {
+            const check = element.checked;    
+            targetCheckboxes.forEach(input => {
+                input.checked = check;
+            });
+        });
+    }
+});
+
+const releaseTable = document.querySelector("#release-table");
+if(releaseTable != null) {
+    const rowCheckboxes = releaseTable.querySelectorAll("input[type=\"checkbox\"]");
+    rowCheckboxes.forEach(element => {
+        element.addEventListener("change", () => {
+            const checkedElements = releaseTable.querySelectorAll("input[type=\"checkbox\"]:checked");
+            if(rowCheckboxes.length == checkedElements.length) {
+                checkboxRoles[0].indeterminate = false;
+                checkboxRoles[0].checked = true;
+            }
+
+            else if (checkedElements.length == 0) {
+                checkboxRoles[0].indeterminate = false;
+                checkboxRoles[0].checked = false;
+            }
+
+            else {
+                checkboxRoles[0].indeterminate = true;
+            }
+        })
+    });
+}

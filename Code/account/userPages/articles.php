@@ -205,13 +205,13 @@
         <thead>
             <tr>
                 <th></th>
-                <th></th>
+                <th><input type="checkbox" data-role="select-all" data-target="#release-table"></th>
                 <th>Název</th>
                 <th>Status</th>
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="release-table">
             <?php 
                 foreach($articles as $article) {
             ?>
@@ -246,6 +246,10 @@
             ?>
         </tbody>
     </table>
+
+    <div class="buttons-row">
+        <button class="theme-button">Vydat</button>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
     <script>
