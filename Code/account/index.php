@@ -199,6 +199,10 @@
             $headerTitle = "Detail článku";
         }
 
+        else if($_GET["page"] == "article-chiefredactor") {
+            $headerTitle = "Detail článku";
+        }
+
         include("userPages/userHeader.php");
     ?>
 
@@ -227,6 +231,10 @@
 
         else if($_GET["page"] == "article-redactor") {
             include("userPages/redactorArticle.php");
+        }
+
+        else if($_GET["page"] == "article-chiefredactor") {
+            include("userPages/chiefredactorArticle.php");
         }
 
         else {

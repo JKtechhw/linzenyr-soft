@@ -100,6 +100,10 @@
             }
         }
 
+        .handle {
+            cursor: grab;
+        }
+
         a {
             color: $color-orange-light;
             text-decoration: none;

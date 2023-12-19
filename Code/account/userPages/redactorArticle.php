@@ -318,7 +318,7 @@
                 <button type="submit" class="theme-button">Zamitnout</button>
             </form>
 
-            <form action="." method="POST">
+            <form action="." method="POST" data-reload-onsuccess="true">
                 <input type="hidden" name="action-page" value="author-article" />
                 <input type="hidden" name="accept-article" value="<?php echo($articleData["articleID"]); ?>" />
                 <button type="submit" class="theme-button">Schválit</button>
