@@ -474,6 +474,16 @@ form {
         width: 100%;
     }
 
+    input {
+        box-sizing: border-box;
+        padding: 8px;
+        width: 100%;
+        border: none;
+        font-size: 1rem;
+        outline: none;
+        border-bottom: 1px solid $color-box-border;
+    }
+
     .input-row {
         justify-content: space-between;
         align-items: center;

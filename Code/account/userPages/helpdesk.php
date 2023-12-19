@@ -10,9 +10,69 @@
     if($_POST) {
         header('Content-Type: application/json; charset=utf-8');
 
+        if(isset($_POST["close"])) {
+            if(is_numeric($_POST["close"]) == false) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "close",
+                    "message" => "Neplatné ID ticketu"
+                );
+        
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                exit();
+            }
+
+            $helpdeskToClose = Db::queryOne("SELECT * FROM helpdesk WHERE helpdeskID = ?", $_POST["close"]);
+
+            if($helpdeskToClose["user"] != $_SESSION["user_id"]) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Nemáte oprávnění pro zavření tohoto helpdesku"
+                );
+        
+                http_response_code(403);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                exit();
+            }
+
+            if($helpdeskToClose["solved"] != NULL) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Helpdesk byl již uzavřen"
+                );
+        
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                exit();
+            }
+
+            Db::query("UPDATE helpdesk SET solved = ? WHERE helpdeskID = ?", 1, $_POST["close"]);
+
+            $responseText = array(
+                "success" => true,
+                "message" => "Helpdesk byl úspěšně uzavřen"
+            );
+    
+            echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+            exit();
+        }
+
         if(isset($_POST["helpdesk"]) || isset($_POST["new-ticket"])) {
             if(isset($_POST["new-ticket"])) {
-                Db::query("INSERT INTO helpdesk (title, user) VALUES (?,?)", "Test pridani", $_SESSION["user_id"]);
+                if(isset($_POST["ticket-name"]) == false || empty($_POST["ticket-name"])) {
+                    $responseText = array(
+                        "success" => false,
+                        "error-field" => "ticket-name",
+                        "message" => "Neplatný název ticketu"
+                    );
+            
+                    http_response_code(400);
+                    echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+                    exit();
+                }
+
+                Db::query("INSERT INTO helpdesk (title, user) VALUES (?,?)", $_POST["ticket-name"], $_SESSION["user_id"]);
                 $helpdesk = Db::getLastId();
             }
 
@@ -192,16 +252,12 @@
                 <input type="hidden" name="new-ticket" value="1">
                 <input type="hidden" name="action-page" value="helpdesk" />
 
-                <input type="text" name="ticket-name">
+                <input type="text" name="ticket-name" placeholder="Zadejte název ticketu...">
 
                 <textarea name="message-text" placeholder="Zadejte zprávu..."></textarea>
 
                 <div class="input-row">
-                    <span>
-                        <button type="button" class="icon-button" id="upload-image-button">
-                            <i class="bi bi-image"></i>
-                        </button>
-                    </span>
+                    <span></span>
 
                     <span>
                         <button type="submit" class="theme-button">Odeslat</button>
@@ -289,11 +345,7 @@
 
             <div class="input-row">
                 <span>
-                    <button type="button" class="icon-button" id="upload-image-button">
-                        <i class="bi bi-image"></i>
-                    </button>
-
-                    <button type="button" class="icon-button" id="close-helpdesk-button">
+                    <button type="button" class="icon-button" id="close-helpdesk-button" data-role="close-ticket" title="Uzamknout ticket">
                         <i class="bi bi-lock-fill"></i>
                     </button>
                 </span>

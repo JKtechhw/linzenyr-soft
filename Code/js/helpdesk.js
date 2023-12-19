@@ -6,11 +6,11 @@ class helpdesk {
 
     constructor(messagesElement, messagesFormElement) {
         this.messagesElement = messagesElement;
-        console.log(messagesFormElement)
         if(typeof messagesFormElement != "undefined" && messagesFormElement != null) {
             this.setFormEvents(messagesFormElement);
         }
         this.startHelpdesk();
+        this.setCloseTicket(messagesFormElement);
     }
     
     async startHelpdesk() {
@@ -99,15 +99,6 @@ class helpdesk {
                 submitButton.click();
 
             }
-        });
-
-        const sendImageMessage = formElement.querySelector("#upload-image-button");
-        sendImageMessage.addEventListener("click", () => {
-            const fileInput = document.createElement("input");
-            fileInput.type = "file";
-            fileInput.accept = "image/*";
-            formElement.appendChild(fileInput);
-            fileInput.click();
         });
     }
 
@@ -251,5 +242,48 @@ class helpdesk {
 
     scrollDown() {
         this.messagesElement.parentElement.scrollTo(0, this.messagesElement.parentElement.scrollHeight);
+    }
+
+    setCloseTicket(formElement) {
+        if(formElement == null) {
+            return;
+        }
+
+        const closeButton = formElement.querySelector("button[data-role=\"close-ticket\"]");
+        closeButton?.addEventListener("click", async () => {
+            const confirmStatus = confirm("Opravdu chcete uzavřít ticket? Po zavření již nebude možné ho znovu otevřít!");
+            if(confirmStatus) {
+                const url = new URL(window.location.href).searchParams;
+                const id = url.get("id");
+                const FD = new FormData();
+                FD.append("action-page", "helpdesk");
+                FD.append("close", id);
+
+                const closeFetch = await fetch(window.location.pathname, {
+                    method: "POST",
+                    body: FD
+                });
+
+                const responseText = await closeFetch.text();
+                let responseJson;
+                try {
+                    responseJson = JSON.parse(responseText);
+                }
+
+                catch(e) {
+                    console.error("Invalid response from server");
+                    console.log(responseText);
+                    return;
+                }
+
+                if(closeFetch?.ok) {
+                    window.location.reload();
+                }
+
+                else {
+                    console.log(responseJson);
+                }
+            }
+        });
     }
 }

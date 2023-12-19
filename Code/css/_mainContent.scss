@@ -215,6 +215,10 @@ main {
             background-color: $nav-hover-background;
             color: $color-orange-light;
         }
+
+        &.no-uderline {
+            text-decoration: none;
+        }
     }
 }
 

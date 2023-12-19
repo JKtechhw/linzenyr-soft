@@ -37,24 +37,6 @@
     }
 
     else {
-        // SELECT u.id,
-        //         u.name,
-        //         MIN(t.spent) AS spent
-        // FROM USERS u
-        // JOIN TRANSACTIONS t ON t.uid = u.id
-        // GROUP BY u.id, u.name
-
-        // SELECT h.*, messages.message
-        // FROM helpdesk h
-        // LEFT JOIN messages ON messages.helpdesk = (
-        //     SELECT messageID
-        //     FROM messages
-        //     WHERE messages.helpdesk = h.helpdeskID
-        //     ORDER BY messageID DESC
-        //     LIMIT 1
-        // )
-        // WHERE h.user = ?
-
         $reports = Db::queryAll("
             SELECT h.*, messages.message
             FROM helpdesk h
@@ -66,6 +48,7 @@
                 LIMIT 1
             )
             WHERE h.user = ?
+            ORDER BY h.helpdeskID DESC
         ", $_SESSION["user_id"]);
     }
 
@@ -80,7 +63,7 @@
             if($_SESSION["role"] != 5) {
         ?>
             <h3>
-                <a href="?page=helpdesk&new-ticket">+</a>
+                <a href="?page=helpdesk&new-ticket" class="no-uderline">+</a>
             </h3>
         <?php 
             }
