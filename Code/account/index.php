@@ -45,6 +45,10 @@
                 include("userPages/helpdesk.php");
             }
 
+            else if($_POST["action-page"] == "submit-release") {
+                include("userPages/chiefredactorArticle.php");
+            }
+
             else {
                 $responseText = array(
                     "success" => false,

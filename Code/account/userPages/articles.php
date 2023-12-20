@@ -215,7 +215,7 @@
             <?php 
                 foreach($articles as $article) {
             ?>
-                <tr>
+                <tr data-value="<?php echo($article["articleID"]); ?>">
                     <td class="handle">
                         <i class="bi bi-grip-vertical"></i>
                     </td>
@@ -248,7 +248,7 @@
     </table>
 
     <div class="buttons-row">
-        <button class="theme-button">Vydat</button>
+        <button class="theme-button" id="submit-release" data-source-data="#release-table" disabled>Vydat</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>

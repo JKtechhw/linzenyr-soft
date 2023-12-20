@@ -257,10 +257,11 @@ checkboxRoles.forEach(element => {
         const targetElement = document.querySelector(element.dataset.target);
         const targetCheckboxes = targetElement.querySelectorAll("input[type=\"checkbox\"]");
 
-        element.addEventListener("click",() => {
+        element.addEventListener("change",() => {
             const check = element.checked;    
             targetCheckboxes.forEach(input => {
                 input.checked = check;
+                input.dispatchEvent(new Event("change"));
             });
         });
     }
@@ -269,22 +270,60 @@ checkboxRoles.forEach(element => {
 const releaseTable = document.querySelector("#release-table");
 if(releaseTable != null) {
     const rowCheckboxes = releaseTable.querySelectorAll("input[type=\"checkbox\"]");
+    const submitButton = document.querySelector("#submit-release");
     rowCheckboxes.forEach(element => {
         element.addEventListener("change", () => {
             const checkedElements = releaseTable.querySelectorAll("input[type=\"checkbox\"]:checked");
             if(rowCheckboxes.length == checkedElements.length) {
                 checkboxRoles[0].indeterminate = false;
                 checkboxRoles[0].checked = true;
+                submitButton.disabled = false;
             }
 
             else if (checkedElements.length == 0) {
                 checkboxRoles[0].indeterminate = false;
                 checkboxRoles[0].checked = false;
+                submitButton.disabled = true;
             }
 
             else {
                 checkboxRoles[0].indeterminate = true;
+                submitButton.disabled = false;
             }
         })
+    });
+}
+
+const submitReleaseButton = document.querySelector("#submit-release[data-source-data]");
+if(submitReleaseButton != null) {
+    const sourceDataElement = document.querySelector(submitReleaseButton.dataset.sourceData);
+
+    submitReleaseButton.addEventListener("click", async () => {
+        const valueElements = sourceDataElement.querySelectorAll("[data-value]");
+        
+        const FD = new FormData();
+        FD.append("action-page", "submit-release");
+
+        valueElements.forEach((element) => {
+            FD.append("article[]", element.dataset.value);
+        });        
+
+        const submitFetch = await fetch(window.location.pathname, {
+            method: "POST",
+            body: FD
+        });
+
+        const responseText = await submitFetch.text();
+        let responseJson;
+        try {
+            responseJson = JSON.parse(responseText);
+        }
+
+        catch(e) {
+            console.error(responseText);
+            return;
+        }
+
+        console.log(responseJson);
     });
 }
