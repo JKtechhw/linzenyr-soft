@@ -51,7 +51,7 @@
 
             ?>
                 <main>
-                    <div id="content-header">
+                    <div class="content-header">
                         <a href="../">
                             <h3><i class="bi bi-arrow-left"></i> <?php echo($articleData["title"]); ?></h3>
                         </a>
@@ -67,25 +67,25 @@
                             </div>
                         </div>
 
-                            <div class="article-tags">
-                                <?php 
-                                    foreach($selectedTagsName as $tag) {
-                                        ?>
-                                            <span><?php echo($tag); ?></span>
-                                        <?php
-                                    }
-                                ?>
-                            </div>
-
+                        <div class="article-tags tags-row">
                             <?php 
-                                if(isset($articleData["banner"])) {
+                                foreach($selectedTagsName as $tag) {
                                     ?>
-                                        <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" class="article-banner">
+                                        <a href="../?tag=<?php echo(urlencode($tag)); ?>" class="tag"><?php echo($tag); ?></a>
                                     <?php
                                 }
                             ?>
+                        </div>
 
-                            <?php echo($articleData["text"]); ?>
+                        <?php 
+                            if(isset($articleData["banner"])) {
+                                ?>
+                                    <img src="../assets/banners/<?php echo($articleData["banner"]); ?>" class="article-banner">
+                                <?php
+                            }
+                        ?>
+
+                        <?php echo(htmlspecialchars_decode($articleData["text"])); ?>
                         </div>
                     </div>
                 </main>
