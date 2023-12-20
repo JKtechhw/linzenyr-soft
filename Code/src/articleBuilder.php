@@ -119,14 +119,14 @@ class buildEdition {
     }
 
     private function writeFile($filename) {
-        if(file_exists(__DIR__ . "/../editions/") == false) {
-            if(is_writable(__DIR__ . "/../") == false) {
+        if(file_exists(__DIR__ . "/../assets/editions/") == false) {
+            if(is_writable(__DIR__ . "/../assets/") == false) {
                 throw new Exception("Cannot write to directory");
             }
 
-            mkdir(__DIR__ . "/../editions/");
+            mkdir(__DIR__ . "/../assets/editions/");
         }
 
-        $this->pdf->Output('F', __DIR__ . "/../editions/" . $filename);
+        $this->pdf->Output('F', __DIR__ . "/../assets/editions/" . $filename);
     }
 }

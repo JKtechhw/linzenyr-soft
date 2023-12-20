@@ -1,4 +1,11 @@
 <?php
+    $request_url = $_SERVER['REQUEST_URI'];
+    if (strpos($request_url, '.php') !== false && substr($request_url, -4) === '.php') {
+        http_response_code(403);
+        echo "Forbidden";
+        exit();
+    }
+
     $pathToSources = "../";
     include("../partials/header.php");
 

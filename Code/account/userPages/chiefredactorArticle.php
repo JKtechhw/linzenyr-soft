@@ -41,6 +41,18 @@
                 exit();
             }
 
+            if(empty($_POST["article"])) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Neplatný formát článků"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+
             if(is_array($_POST["article"]) == false) {
                 $responseText = array(
                     "success" => false,
@@ -112,7 +124,7 @@
 
             try {
                 include(__DIR__ . "/../../src/articleBuilder.php");
-                new buildEdition($editionID, $basename . ".pdf");
+                new buildEdition($editionID, $basename . "-" . $editionID . ".pdf");
             }
 
             catch(Exception $e) {

@@ -307,7 +307,9 @@ if(submitReleaseButton != null) {
         FD.append("release-title", releaseNameInput.value);
 
         valueElements.forEach((element) => {
-            FD.append("article[]", element.dataset.value);
+            if(element.querySelector("input[type=\"checkbox\"]").checked) {
+                FD.append("article[]", element.dataset.value);
+            }
         });        
 
         const submitFetch = await fetch(window.location.pathname, {

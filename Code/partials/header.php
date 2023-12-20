@@ -39,14 +39,14 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="<?php echo($pathToSources); ?>#">
+                <li <?php echo(($page == "editions") ? 'class="active"' : "") ?>>
+                    <a href="<?php echo($pathToSources); ?>editions/">
                         <i class="bi bi-newspaper"></i> 
                         <span>Vydání</span>
                     </a>
                 </li>
 
-                <li <?php echo(($page == "account") ? 'class="active"' : "xd") ?>>
+                <li <?php echo(($page == "account") ? 'class="active"' : "") ?>>
                     <a href="<?php echo($pathToSources); ?>account/">
                         <i class="bi bi-person"></i>
                         <span>Účet</span>
