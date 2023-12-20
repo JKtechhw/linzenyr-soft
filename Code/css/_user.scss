@@ -78,6 +78,10 @@
         display: flex;
     }
 
+    .buttons-row {
+        margin: 10px 0;
+    }
+
     table {
         border-collapse: collapse;
         table-layout: auto;
@@ -112,7 +116,7 @@
     }
 }
 
-form {
+form, .form-pseudo {
     box-sizing: border-box;
     padding: 10px;
 

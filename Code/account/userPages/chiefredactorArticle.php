@@ -15,6 +15,32 @@
         }
 
         if(isset($_POST["article"])) {
+            if(isset($_POST["release-title"]) == false || empty($_POST["release-title"])) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "release-title",
+                    "message" => "Vyplňte všechny povinné údaje"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+
+            if($_POST["release-title"] != strip_tags($_POST["release-title"])) {
+                $responseText = array(
+                    "success" => false,
+                    "error-field" => "release-title",
+                    "message" => "Název obsahuje zakázané znaky"
+                );
+    
+                http_response_code(400);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
+            }
+
             if(is_array($_POST["article"]) == false) {
                 $responseText = array(
                     "success" => false,
@@ -59,10 +85,19 @@
                 exit();
             }
 
+            $currentDate = new DateTime();
+            // Získání aktuálního roku
+            $year = $currentDate->format('Y');
+
+            // Získání čísla kvartálu
+            $quarter = ceil((int)$currentDate->format('n') / 3);
+
+            $basename = $year . '-' . $quarter;
+
             Db::query("
                 INSERT INTO editions (date, basename, title) 
                 VALUES (?,?,?)
-            ", date('Y-m-d H:i:s'), "test-basename", "Test title");
+            ", date('Y-m-d H:i:s'), $basename, $_POST["release-title"]);
 
             $editionID = Db::getLastId();
 
@@ -73,6 +108,23 @@
                 ", $articleID, $editionID, $index);
 
                 Db::query("UPDATE articles SET status = ? WHERE articleID = ?", 5, $articleID);
+            }
+
+            try {
+                include(__DIR__ . "/../../src/articleBuilder.php");
+                new buildEdition($editionID, $basename . ".pdf");
+            }
+
+            catch(Exception $e) {
+                $responseText = array(
+                    "success" => false,
+                    "message" => "Nepodařilo se vytvořit PDF soubor"
+                );
+    
+                http_response_code(500);
+                echo(json_encode($responseText, JSON_UNESCAPED_UNICODE));
+    
+                exit();
             }
 
             $responseText = array(

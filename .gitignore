@@ -11,3 +11,5 @@ Code/assets/**/*[.png, .jpg, .gif]
 # Allow default files
 !Code/assets/avatars/default.png
 !Code/assets/Images/*
+
+/Code/editions

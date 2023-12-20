@@ -7,6 +7,7 @@
 - [O projektu](#o-projektu)
 - [Instalace](#instalace)
 - [Fukce](#funkce)
+- [Použité zdroje](#funkce)
 
 ## O projektu
 Jedná se o školní projekt do předmětu *Řízení softwarových projektů*. Jedná se o webovou aplikaci, s redakčním systémem pro psaní článků. 
@@ -82,3 +83,9 @@ Pro každého uživatele je **heslo stejné jako login**, seznam uživatelů je 
 | 3 | Schváleno | Článek byl schválen a je připraven k publikování na webu, autor již nemůže článek upravovat |
 | 4 | Publikováno | Článek byl schválen a je publikován na webu, autor již nemůže článek upravovat |
 | 5 | Vydáno | Článek byl publikován v některém vydání časopisu |
+
+### Použité zdroje
+- [tFPDF :heart:](http://www.fpdf.org/?go=script&id=92)
+- [Sortable.js :heart:](https://github.com/SortableJS/Sortable)
+- [Bootstrap icons :heart:](https://icons.getbootstrap.com/)
+- [itnetwork.cz DB wrapper :heart:](https://www.itnetwork.cz/)

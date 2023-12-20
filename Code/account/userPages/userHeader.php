@@ -68,11 +68,11 @@
 
     <div class="separator"></div>
     <ul class="user-nav-content">
-        <li <?php echo($page == "profile" ? 'class="active"' : ""); ?>>
+        <!-- <li <?php echo($page == "profile" ? 'class="active"' : ""); ?>>
             <a href="?page=profile">
                 <span>Profil</span>
             </a>
-        </li>
+        </li> -->
 
         <li>
             <a href="<?php echo($pathToSources); ?>account" class="logout">

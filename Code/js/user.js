@@ -300,9 +300,11 @@ if(submitReleaseButton != null) {
 
     submitReleaseButton.addEventListener("click", async () => {
         const valueElements = sourceDataElement.querySelectorAll("[data-value]");
+        const releaseNameInput = document.querySelector("input[name=\"release-title\"]");
         
         const FD = new FormData();
         FD.append("action-page", "submit-release");
+        FD.append("release-title", releaseNameInput.value);
 
         valueElements.forEach((element) => {
             FD.append("article[]", element.dataset.value);
@@ -322,6 +324,14 @@ if(submitReleaseButton != null) {
         catch(e) {
             console.error(responseText);
             return;
+        }
+
+        if(submitFetch?.ok) {
+            window.location.reload();
+        }
+
+        else {
+            //TODO
         }
 
         console.log(responseJson);

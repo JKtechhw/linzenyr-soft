@@ -201,6 +201,13 @@
         else {
     ?>
 
+    <div class="buttons-row form-pseudo">
+        <label>
+            <input name="release-title" type="text" placeholder=" " />
+            <span>Název vydání</span>
+        </label>
+    </div>
+
     <table id="release-articles-table">
         <thead>
             <tr>
