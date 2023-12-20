@@ -4,6 +4,23 @@
 
     #search-box {
         position: relative;
+
+        .search-input-container {
+            position: relative;
+
+            &::after {
+                font-family: $font-bootstrap-icons;
+                transform: translateY(-50%);
+                color: $search-icon-color;
+                pointer-events: none;
+                position: absolute;
+                content: " \F52A";
+                font-weight: 900;
+                right: 12px;
+                top: 50%;
+            }
+        }
+
         width: 100%;
 
         input[type="search"] {
@@ -24,7 +41,7 @@
             &::-webkit-search-cancel-button,
             &::-webkit-search-results-button,
             &::-webkit-search-results-decoration {
-                appearance:none;
+                appearance: none;
             }
 
             &:focus {
@@ -32,16 +49,28 @@
             }
         }
 
-        &::after {
-            font-family: $font-bootstrap-icons;
-            transform: translateY(-50%);
-            color: $search-icon-color;
-            pointer-events: none;
-            position: absolute;
-            content: " \F52A";
-            font-weight: 900;
-            right: 12px;
-            top: 50%;
+        #search-output {
+            border: 1px solid $search-border;
+            background-color: #ffffff;
+            border-radius: 5px;
+            margin-top: 5px;
+
+            &:empty {
+                display: none;
+            }
+
+            .search-article {
+                box-sizing: border-box;
+                text-decoration: none;
+                color: #000000;
+                padding: 5px;
+                display: block;
+                width: 100%;
+
+                &:hover {
+                    background-color: #0000000c;
+                }
+            }
         }
     }
 }

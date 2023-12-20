@@ -72,7 +72,10 @@
 
 <div id="suggestions-container">
     <div id="search-box">
-        <input id="search" type="search" placeholder="Vyhledat článek..." autocomplete="off"  />
+        <div class="search-input-container">
+            <input id="search" type="search" placeholder="Vyhledat článek..." autocomplete="off" data-action="../search/" />
+        </div>
+        <div id="search-output"></div>
     </div>
 </div>
 
